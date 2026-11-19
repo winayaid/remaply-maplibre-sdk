@@ -744,13 +744,14 @@ On iOS, rotation keeps the same view, so nothing is rebuilt.
 - When the view has an id, `onSaveInstanceState(outState)` saves style and camera, and they are restored on recreation.
 - Markers are **not** saved because they may hold Bitmaps. The app re-adds them in `onMapReady`.
 - With automatic lifecycle this happens through the View's normal saved-state mechanism, and the manual method is only needed for custom hosts.
+- **Compose:** `rememberMapController` saves style and camera with the screen's saved state and restores them into a fresh controller after process death. After a configuration change, the retained controller already has them and nothing is overwritten.
 - iOS has no equivalent hook; app termination is handled by the app.
 
 ### 9.4 Memory guarantees
 
 - After `onDestroy`, no SDK object holds a reference to the Activity, Context, View, UIView, view controller, or app listener.
 - A controller with no bound view holds only value types and Bitmap/UIImage icons.
-- 50 repeated create/destroy cycles must show no growth in retained objects, checked with LeakCanary on Android and the Xcode memory graph / `XCTMemoryMetric` on iOS (Phase 5).
+- 50 repeated create/destroy cycles must show no growth in retained objects. The instrumented and integration tests (Phase 5) check that every view, native map view, and Android Activity is released. They compare memory growth with plain MapLibre doing the same cycles in the same process; the SDK may add at most 16 MB. (MapLibre itself retains some native memory per map instance on the Android emulator; see `docs/test-report.md`.)
 
 ---
 

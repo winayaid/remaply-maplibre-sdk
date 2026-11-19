@@ -56,3 +56,26 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.remaply.maps.sample
         TARGETED_DEVICE_FAMILY: "1,2"
         GENERATE_INFOPLIST_FILE: NO
+
+  RemaplySampleUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - RemaplySampleUITests
+    dependencies:
+      - target: RemaplySample
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.remaply.maps.sample.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: RemaplySample
+
+schemes:
+  RemaplySample:
+    build:
+      targets:
+        RemaplySample: all
+        RemaplySampleUITests: [test]
+    test:
+      targets:
+        - RemaplySampleUITests

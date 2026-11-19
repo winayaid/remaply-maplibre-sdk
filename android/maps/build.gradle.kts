@@ -13,6 +13,7 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         consumerProguardFiles("consumer-rules.pro")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "SDK_VERSION", "\"${project.version}\"")
         buildConfigField("String", "MAPLIBRE_VERSION", "\"${libs.versions.maplibre.get()}\"")
     }
@@ -63,4 +64,12 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
 
     testImplementation(libs.junit4)
+
+    // Instrumented tests (Phase 5). Test-only dependencies; nothing here ships with the SDK.
+    androidTestImplementation(libs.junit4)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.activity)
+    androidTestImplementation(libs.okhttp)
 }

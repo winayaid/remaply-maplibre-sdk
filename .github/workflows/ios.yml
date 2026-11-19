@@ -15,9 +15,9 @@ permissions:
 
 jobs:
   ios:
-    name: SDK + sample — lint, build, unit tests
+    name: SDK + sample — lint, unit, integration and UI tests
     runs-on: macos-26
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
 
@@ -77,17 +77,17 @@ jobs:
             exit 1
           fi
 
-      - name: Build sample app
+      - name: Sample UI tests (taps, touch-cancel, rotation)
         run: |
           set -o pipefail
-          xcodebuild build \
+          xcodebuild test \
             -project samples/ios/RemaplySample.xcodeproj \
             -scheme RemaplySample \
             -destination "${{ steps.sim.outputs.destination }}" \
             -derivedDataPath build/dd-sample \
-            CODE_SIGNING_ALLOWED=NO \
-            | tee build/sample-build.log | grep -E "error:|warning:|\*\* BUILD" || true
-          grep -q "\*\* BUILD SUCCEEDED \*\*" build/sample-build.log
+            -resultBundlePath build/RemaplySample.xcresult \
+            | tee build/sample-test.log | grep -E "Test Case|Executed|error:|\*\* TEST" || true
+          grep -q "\*\* TEST SUCCEEDED \*\*" build/sample-test.log
 
       - name: Upload results
         if: failure()

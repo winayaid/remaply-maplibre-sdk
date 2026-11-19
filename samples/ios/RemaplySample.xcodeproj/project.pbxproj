@@ -9,11 +9,22 @@
 /* Begin PBXBuildFile section */
 		1A5480861D78E50C753EDA25 /* RemaplyMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 54A53FAAB482764E0F2E17CC /* RemaplyMaps */; };
 		34A3A1603CC5D29057208FEA /* UIKitSampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */; };
+		6DE322CA0DBABD92AB0B9F99 /* SampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF787B6A5DB2FF85629EE074 /* SampleUITests.swift */; };
 		6EE4C553912EBAA9E2FB793A /* styles in Resources */ = {isa = PBXBuildFile; fileRef = EF18404DBAC0CE5E539975D1 /* styles */; };
 		7D2E5596303325EBC4D14BF2 /* SampleScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A8352372755B5779D95C0 /* SampleScenario.swift */; };
 		94E88FE053255EFE209F508F /* ParityScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401CABDDF29E8025C096EEF9 /* ParityScript.swift */; };
 		DD15BD8E8921D54AB0962540 /* RemaplySampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8A3AD01AA1CBF448F1F201 /* RemaplySampleApp.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AC772EE5DF897942CC091643 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 529C5FC0BC232C6AC261240C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5C0DA93C834516EA2F4D9E1;
+			remoteInfo = RemaplySample;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		401CABDDF29E8025C096EEF9 /* ParityScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParityScript.swift; sourceTree = "<group>"; };
@@ -22,7 +33,9 @@
 		8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitSampleViewController.swift; sourceTree = "<group>"; };
 		A3EC9ABB8D339E5CD9EA4C7C /* RemaplySample.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RemaplySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54A8352372755B5779D95C0 /* SampleScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleScenario.swift; sourceTree = "<group>"; };
+		E6015150C5BA94F442738376 /* RemaplySampleUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RemaplySampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF18404DBAC0CE5E539975D1 /* styles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = styles; path = Resources/styles; sourceTree = SOURCE_ROOT; };
+		EF787B6A5DB2FF85629EE074 /* SampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleUITests.swift; sourceTree = "<group>"; };
 		FA8A3AD01AA1CBF448F1F201 /* RemaplySampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemaplySampleApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				A3EC9ABB8D339E5CD9EA4C7C /* RemaplySample.app */,
+				E6015150C5BA94F442738376 /* RemaplySampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -62,11 +76,20 @@
 			name = Packages;
 			sourceTree = "<group>";
 		};
+		AEEB1D60A2B7C8EA8CE7C45D /* RemaplySampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				EF787B6A5DB2FF85629EE074 /* SampleUITests.swift */,
+			);
+			path = RemaplySampleUITests;
+			sourceTree = "<group>";
+		};
 		BD8CD1440445A7870A97DDF0 = {
 			isa = PBXGroup;
 			children = (
 				9EE67F1D66BAAE63229E8435 /* Packages */,
 				FE3E366B1EE24FCEB9A26E2B /* RemaplySample */,
+				AEEB1D60A2B7C8EA8CE7C45D /* RemaplySampleUITests */,
 				40A6350573C762A12ECF596F /* Resources */,
 				58FA2922FFF0B9C2F53A01CD /* Products */,
 			);
@@ -107,6 +130,24 @@
 			productReference = A3EC9ABB8D339E5CD9EA4C7C /* RemaplySample.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F7FC2CDC84752C8B3B5A15AC /* RemaplySampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BE51AE6BF247669DFE123DA /* Build configuration list for PBXNativeTarget "RemaplySampleUITests" */;
+			buildPhases = (
+				4E3ECBB27A66162D4215FFFB /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1B48BDFBCB8FF44B74D73FA0 /* PBXTargetDependency */,
+			);
+			name = RemaplySampleUITests;
+			packageProductDependencies = (
+			);
+			productName = RemaplySampleUITests;
+			productReference = E6015150C5BA94F442738376 /* RemaplySampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -119,6 +160,11 @@
 					B5C0DA93C834516EA2F4D9E1 = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
+					};
+					F7FC2CDC84752C8B3B5A15AC = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = B5C0DA93C834516EA2F4D9E1;
 					};
 				};
 			};
@@ -140,6 +186,7 @@
 			projectRoot = "";
 			targets = (
 				B5C0DA93C834516EA2F4D9E1 /* RemaplySample */,
+				F7FC2CDC84752C8B3B5A15AC /* RemaplySampleUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -156,6 +203,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4E3ECBB27A66162D4215FFFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DE322CA0DBABD92AB0B9F99 /* SampleUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		923067A91C1E3FF6411031B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -168,6 +223,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1B48BDFBCB8FF44B74D73FA0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5C0DA93C834516EA2F4D9E1 /* RemaplySample */;
+			targetProxy = AC772EE5DF897942CC091643 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5DADFEC09AF91DFBC2642F9B /* Debug */ = {
@@ -331,6 +394,40 @@
 			};
 			name = Debug;
 		};
+		7B00198E8E4BF564621226E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.remaply.maps.sample.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RemaplySample;
+			};
+			name = Debug;
+		};
+		DB3B71EE7F42C0C805FE2C64 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.remaply.maps.sample.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RemaplySample;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -348,6 +445,15 @@
 			buildConfigurations = (
 				5DADFEC09AF91DFBC2642F9B /* Debug */,
 				60AFA42E4B20AE483FFB6770 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3BE51AE6BF247669DFE123DA /* Build configuration list for PBXNativeTarget "RemaplySampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B00198E8E4BF564621226E3 /* Debug */,
+				DB3B71EE7F42C0C805FE2C64 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

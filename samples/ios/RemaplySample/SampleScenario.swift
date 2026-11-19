@@ -16,9 +16,18 @@ enum SampleScenario {
         return defaultStyle
     }
 
-    static let options = MapOptions(
-        initialCamera: CameraPosition(center: GeoCoordinate(latitude: 48.8566, longitude: 2.3522), zoom: 12)
-    )
+    /// UI tests launch with `-uiTesting YES`: the camera starts centered on marker "b" at zoom 14,
+    /// so tap targets do not depend on the screen size.
+    static var isUITesting: Bool { UserDefaults.standard.bool(forKey: "uiTesting") }
+
+    static var options: MapOptions {
+        if isUITesting {
+            return MapOptions(initialCamera: CameraPosition(center: markers[1].coordinate, zoom: 14))
+        }
+        return MapOptions(
+            initialCamera: CameraPosition(center: GeoCoordinate(latitude: 48.8566, longitude: 2.3522), zoom: 12)
+        )
+    }
 
     static let markers: [Marker] = [
         Marker(id: "a", coordinate: GeoCoordinate(latitude: 48.8584, longitude: 2.2945)),

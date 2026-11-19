@@ -41,6 +41,12 @@ Targeting **0.1.0** (first beta).
   - `scripts/run-parity-trace.sh` runs the same scripted scenario on both samples and compares the event
     trace with `docs/parity/expected-trace.txt`, including a render probe of the markers actually drawn.
 
+- **Tests (Phase 5):** see `docs/test-report.md`.
+  - Android instrumented tests (style, marker, camera, taps, touch-cancel, errors, recreation, saved state,
+    lifecycle, and leak checks), with HTTP stubbed in-process. CI runs them on API 24 and API 36 emulators.
+  - iOS integration and leak tests in the package test target, and XCUITests in the sample (taps,
+    touch-cancel, rotation) run on every pull request.
+
 ### Changed (spec clarifications, Phase 2)
 
 These make existing behavior explicit; no public names or signatures changed.
@@ -53,6 +59,8 @@ These make existing behavior explicit; no public names or signatures changed.
 - §9.1 (Phase 3): On iOS, a view deallocated without `onDestroy` releases its map; the controller keeps its state.
 - §8.2 (Phase 4): What the map shows after each kind of style error; gesture physics are platform-native.
 - §11 (Phase 4): MapLibre iOS has no debug/verbose levels for its own messages.
+- §9.3 (Phase 5): Compose `rememberMapController` also saves style and camera for process death.
+- §9.4 (Phase 5): Leak checks measure SDK overhead against a plain-MapLibre baseline.
 
 ### Fixed
 
@@ -62,3 +70,5 @@ These make existing behavior explicit; no public names or signatures changed.
   stopped rendering until another style loaded. Markers now render into whichever style is on screen.
 - Android: a marker change could intermittently fail to render because MapLibre applied GeoJSON updates on a
   worker thread. The marker source now updates synchronously.
+- Android Compose: after process death, a map using `rememberMapController` came back at its initial camera
+  and without its style. Style and camera are now saved with the screen state.
