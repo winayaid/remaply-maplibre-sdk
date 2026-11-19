@@ -107,6 +107,7 @@ Instrumented and integration tests serve map styles from an in-process HTTP stub
 |---|---|
 | **API 24 emulator crashed**: `java.lang.Error: No Vulkan compatible GPU found` on MapLibre's render thread. The default `org.maplibre.gl:android-sdk` artifact uses the Vulkan renderer, and Vulkan is optional on Android 7–9, so real devices at the minimum OS could crash the same way. | The SDK now depends on `org.maplibre.gl:android-sdk-opengl` (OpenGL ES), as spec §1 already stated. All 9 instrumented tests pass locally with it; the CI rerun covers API 24. |
 | **iOS touch-cancel UI test** saw `Animation finished: true`: on the slower CI machine, the 1-second animation ended before the drag reached the map. | In UI-testing mode the sample animates for 5 seconds, which leaves a wide window for the touch. |
+| **API 24 emulator crashed in the leak test** after the OpenGL fix: `EGL_BAD_MATCH` errors from the emulator's EGL layer as more MapLibre GL surfaces were created, then the process died. The emulator uses a software GL driver, and the native crash was not captured. | The leak tests run on API 26+ (`@SdkSuppress`). The rest of the instrumented suite runs on API 24. A physical API 24–25 check is open issue 5. |
 
 ## 4. Open issues
 
@@ -114,6 +115,8 @@ Instrumented and integration tests serve map styles from an in-process HTTP stub
 2. **MapLibre native retention on the Android emulator.** Plain MapLibre retains about 4.8 MB of native memory per map instance on the emulator. The SDK adds nothing on top, but an app that creates many maps would see this growth. Recommendation: repeat on a physical device. If it reproduces, report it upstream to MapLibre with the baseline test as the reproduction.
 3. **Pending CI results.** The Android API 24 and API 36 emulator jobs run for the first time when this branch is pushed. API 24 uses a software GPU in CI; if MapLibre can't render there, the job will show `RENDERER_INIT_FAILED` or timeouts, and the matrix will need adjusting.
 4. **Physical devices.** All results above are from emulators and simulators. Phase 7's beta should include at least one physical Android device and one physical iPhone.
+
+5. **Several map surfaces on Android 7.x.** On the API 24 emulator, creating many MapLibre GL surfaces in quick succession crashes the process (see section 3a). It may be specific to the emulator's software GL driver; verify on a physical Android 7.0–7.1 device during the beta. If it reproduces with plain MapLibre, report it upstream.
 
 ## 5. How to re-run
 

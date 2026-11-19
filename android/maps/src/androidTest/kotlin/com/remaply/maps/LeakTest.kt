@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.SdkSuppress
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -27,6 +28,10 @@ import java.util.concurrent.atomic.AtomicInteger
  *   MapLibre baseline run in the same process. The SDK may add at most [MAX_SDK_OVERHEAD_MB].
  */
 @RunWith(AndroidJUnit4::class)
+// The API 24 CI emulator (software GL) crashes when many MapLibre GL surfaces are created in quick
+// succession (EGL_BAD_MATCH from the emulator's EGL layer), with or without the SDK. The cycles run on
+// API 26+; API 24–25 needs a physical-device check (docs/test-report.md, open issues).
+@SdkSuppress(minSdkVersion = 26)
 class LeakTest {
     /** 50 map views created, made ready, and destroyed inside one Activity, bound to one long-lived controller. */
     @Test
