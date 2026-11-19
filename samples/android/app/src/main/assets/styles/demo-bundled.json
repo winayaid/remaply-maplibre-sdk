@@ -1,0 +1,28 @@
+{
+  "version": 8,
+  "name": "Remaply bundled demo",
+  "sources": {
+    "demotiles": {
+      "type": "vector",
+      "url": "https://demotiles.maplibre.org/tiles/tiles.json",
+      "attribution": "© MapLibre demo tiles"
+    }
+  },
+  "layers": [
+    { "id": "background", "type": "background", "paint": { "background-color": "#D6EAF8" } },
+    {
+      "id": "countries-fill",
+      "type": "fill",
+      "source": "demotiles",
+      "source-layer": "countries",
+      "paint": { "fill-color": "#F5F1E6" }
+    },
+    {
+      "id": "countries-line",
+      "type": "line",
+      "source": "demotiles",
+      "source-layer": "countries",
+      "paint": { "line-color": "#9E9E9E", "line-width": 0.6 }
+    }
+  ]
+}

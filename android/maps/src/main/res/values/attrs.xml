@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- XML attributes for RemaplyMapView (API_SPEC.md §7.1). -->
+    <declare-styleable name="RemaplyMapView">
+        <!-- Initial style URL (absolute http or https). -->
+        <attr name="remaply_styleUrl" format="string" />
+        <!-- Initial style file path inside the app's assets folder. Ignored if remaply_styleUrl is set. -->
+        <attr name="remaply_styleAsset" format="string" />
+    </declare-styleable>
+</resources>
