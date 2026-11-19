@@ -37,6 +37,7 @@ jobs:
       - name: Pick and boot simulator
         id: sim
         run: |
+          mkdir -p build
           DEST=$(scripts/ios-sim-destination.sh)
           echo "destination=$DEST" >> "$GITHUB_OUTPUT"
           UDID="${DEST##*id=}"
