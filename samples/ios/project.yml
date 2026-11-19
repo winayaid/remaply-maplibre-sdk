@@ -30,6 +30,9 @@ targets:
     platform: iOS
     sources:
       - RemaplySample
+      # Folder reference: keeps "styles/" in the app bundle, matching Android's assets/styles/.
+      - path: Resources/styles
+        type: folder
     dependencies:
       - package: RemaplyMaps
         product: RemaplyMaps

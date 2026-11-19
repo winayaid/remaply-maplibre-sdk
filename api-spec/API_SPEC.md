@@ -713,7 +713,7 @@ How the listener is referenced differs by platform:
 |---|---|
 | Android View | Binds to `findViewTreeLifecycleOwner()` when attached to a window. In Fragments this is the view lifecycle owner. If there is no owner, the app must call the lifecycle methods. `onLowMemory` comes from `ComponentCallbacks2`. |
 | Compose | `LocalLifecycleOwner`. Leaving the composition calls `onDestroy`. |
-| iOS UIKit | Moving into or out of a window → start/stop. `didEnterBackground` / `willEnterForeground` → pause+stop / start+resume. `didReceiveMemoryWarning` → `onLowMemory`. `deinit` → `onDestroy`. |
+| iOS UIKit | Moving into or out of a window → start/stop. `didEnterBackground` / `willEnterForeground` → pause+stop / start+resume. `didReceiveMemoryWarning` → `onLowMemory`. A view deallocated without `onDestroy` still releases its native map, and its controller keeps the last idle camera, style, and markers (the controller holds its view weakly). |
 | SwiftUI | Same as UIKit. `dismantleUIView` calls `onDestroy`. |
 
 ### 9.2 Surviving rotation and backgrounding

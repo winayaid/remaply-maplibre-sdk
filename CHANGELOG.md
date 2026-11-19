@@ -29,6 +29,12 @@ Targeting **0.1.0** (first beta).
   - Markers rendered as an SDK-managed GeoJSON source + symbol layer with an 8 dp tap radius.
   - Logging and error reporting: `RemaplyMaps.logLevel`, `RemaplyMaps.logger`, MapLibre logs forwarded.
 - Android sample: Compose and classic View screens running the reference scenario (API_SPEC.md §16).
+- **iOS SDK (Phase 3):** full v1 API per `API_SPEC.md`, with the same names, defaults, error codes,
+  event order, animation algorithm, and marker rendering as Android.
+  - `MapController` (`ObservableObject`), `RemaplyMapView` (UIKit), `RemaplyMap` (SwiftUI).
+  - Automatic lifecycle from window attachment and app foreground/background notifications.
+  - Logging hook (`RemaplyMaps.logLevel`, `RemaplyMaps.logger`), MapLibre logs forwarded; default `os.Logger`.
+- iOS sample: SwiftUI and UIKit screens running the reference scenario, plus a bundled demo style.
 
 ### Changed (spec clarifications, Phase 2)
 
@@ -39,7 +45,9 @@ These make existing behavior explicit; no public names or signatures changed.
 - §6.5: Marker validation order is empty id → invalid coordinate → duplicate / not found.
 - §8.2: Taps before `onMapReady` are ignored.
 - §8.3: A cancelled animation emits `onCameraIdle` before `completion(false)`.
+- §9.1 (Phase 3): On iOS, a view deallocated without `onDestroy` releases its map; the controller keeps its state.
 
 ### Fixed
 
 - iOS CI: create `build/` before writing test logs (tests passed but the job failed on a fresh checkout).
+- iOS CI: pin XcodeGen 2.47.0; the Homebrew build on the runner generated a slightly different sample project.

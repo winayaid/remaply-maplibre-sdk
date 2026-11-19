@@ -8,13 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		1A5480861D78E50C753EDA25 /* RemaplyMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 54A53FAAB482764E0F2E17CC /* RemaplyMaps */; };
+		34A3A1603CC5D29057208FEA /* UIKitSampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */; };
+		6EE4C553912EBAA9E2FB793A /* styles in Resources */ = {isa = PBXBuildFile; fileRef = EF18404DBAC0CE5E539975D1 /* styles */; };
+		7D2E5596303325EBC4D14BF2 /* SampleScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A8352372755B5779D95C0 /* SampleScenario.swift */; };
 		DD15BD8E8921D54AB0962540 /* RemaplySampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8A3AD01AA1CBF448F1F201 /* RemaplySampleApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		68173BA8C85CD403FC0FB741 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		68BD5BB4AFD6428E06BE4D8C /* remaply-maplibre-sdk */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "remaply-maplibre-sdk"; path = ../..; sourceTree = SOURCE_ROOT; };
+		8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitSampleViewController.swift; sourceTree = "<group>"; };
 		A3EC9ABB8D339E5CD9EA4C7C /* RemaplySample.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RemaplySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B54A8352372755B5779D95C0 /* SampleScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleScenario.swift; sourceTree = "<group>"; };
+		EF18404DBAC0CE5E539975D1 /* styles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = styles; path = Resources/styles; sourceTree = SOURCE_ROOT; };
 		FA8A3AD01AA1CBF448F1F201 /* RemaplySampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemaplySampleApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -30,6 +36,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		40A6350573C762A12ECF596F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EF18404DBAC0CE5E539975D1 /* styles */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		58FA2922FFF0B9C2F53A01CD /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -51,6 +65,7 @@
 			children = (
 				9EE67F1D66BAAE63229E8435 /* Packages */,
 				FE3E366B1EE24FCEB9A26E2B /* RemaplySample */,
+				40A6350573C762A12ECF596F /* Resources */,
 				58FA2922FFF0B9C2F53A01CD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,6 +75,8 @@
 			children = (
 				68173BA8C85CD403FC0FB741 /* Info.plist */,
 				FA8A3AD01AA1CBF448F1F201 /* RemaplySampleApp.swift */,
+				B54A8352372755B5779D95C0 /* SampleScenario.swift */,
+				8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */,
 			);
 			path = RemaplySample;
 			sourceTree = "<group>";
@@ -72,6 +89,7 @@
 			buildConfigurationList = 0A2DC738C249404FBFFF4E59 /* Build configuration list for PBXNativeTarget "RemaplySample" */;
 			buildPhases = (
 				923067A91C1E3FF6411031B0 /* Sources */,
+				D124363259F2D59340FEDCF0 /* Resources */,
 				F16B56F78BA30220E359960B /* Frameworks */,
 			);
 			buildRules = (
@@ -123,12 +141,25 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		D124363259F2D59340FEDCF0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EE4C553912EBAA9E2FB793A /* styles in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		923067A91C1E3FF6411031B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				DD15BD8E8921D54AB0962540 /* RemaplySampleApp.swift in Sources */,
+				7D2E5596303325EBC4D14BF2 /* SampleScenario.swift in Sources */,
+				34A3A1603CC5D29057208FEA /* UIKitSampleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
