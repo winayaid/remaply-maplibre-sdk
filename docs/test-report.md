@@ -101,6 +101,13 @@ Instrumented and integration tests serve map styles from an in-process HTTP stub
 | Android instrumented tests and iOS integration, leak, and UI tests added | Phase 5 deliverable |
 | CI: Android emulator matrix (API 24, 36) and iOS sample UI tests | Run the new tests on every pull request, including Android's minimum OS |
 
+## 3a. Found by CI on the first run
+
+| Finding | Fix |
+|---|---|
+| **API 24 emulator crashed**: `java.lang.Error: No Vulkan compatible GPU found` on MapLibre's render thread. The default `org.maplibre.gl:android-sdk` artifact uses the Vulkan renderer, and Vulkan is optional on Android 7–9, so real devices at the minimum OS could crash the same way. | The SDK now depends on `org.maplibre.gl:android-sdk-opengl` (OpenGL ES), as spec §1 already stated. All 9 instrumented tests pass locally with it; the CI rerun covers API 24. |
+| **iOS touch-cancel UI test** saw `Animation finished: true`: on the slower CI machine, the 1-second animation ended before the drag reached the map. | In UI-testing mode the sample animates for 5 seconds, which leaves a wide window for the touch. |
+
 ## 4. Open issues
 
 1. **iOS 15.5–18 not tested.** Only the iOS 26.1 simulator runtime is installed locally, and the CI image uses iOS 26.x. Older runtimes need a separate download, and current Xcode may not support simulators that old. Recommendation: test on a physical device running iOS 15.5–17 during the 0.1.0 beta (Phase 7).

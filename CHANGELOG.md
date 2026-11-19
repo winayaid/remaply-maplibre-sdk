@@ -70,5 +70,8 @@ These make existing behavior explicit; no public names or signatures changed.
   stopped rendering until another style loaded. Markers now render into whichever style is on screen.
 - Android: a marker change could intermittently fail to render because MapLibre applied GeoJSON updates on a
   worker thread. The marker source now updates synchronously.
+- Android: the SDK depended on `org.maplibre.gl:android-sdk`, which uses MapLibre's Vulkan renderer and crashes
+  the app on devices without Vulkan (found by the API 24 CI emulator). It now uses `android-sdk-opengl`, the
+  OpenGL ES renderer that the spec (§1) already named.
 - Android Compose: after process death, a map using `rememberMapController` came back at its initial camera
   and without its style. Style and camera are now saved with the screen state.

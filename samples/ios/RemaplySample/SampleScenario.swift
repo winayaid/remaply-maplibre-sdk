@@ -47,7 +47,9 @@ enum SampleScenario {
 
     @MainActor
     static func animate(_ controller: MapController, onDone: @escaping (Bool) -> Void) {
-        try? controller.animateCamera(CameraUpdate(zoom: 13, bearing: 45), durationMs: 1000, completion: onDone)
+        // UI tests use a longer animation so a touch can reliably interrupt it on slow CI machines.
+        let durationMs = isUITesting ? 5000 : 1000
+        try? controller.animateCamera(CameraUpdate(zoom: 13, bearing: 45), durationMs: durationMs, completion: onDone)
     }
 
     @MainActor

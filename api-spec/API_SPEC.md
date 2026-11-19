@@ -41,7 +41,7 @@ This document defines every public type, method, parameter, callback, default va
 |---|---|---|
 | Wrapped SDK | MapLibre Native Android | MapLibre Native iOS |
 | Pinned version | **13.7.1** (released 2026-10-15) | **7.0.0** (released 2026-10-28) |
-| Dependency | `org.maplibre.gl:android-sdk:13.7.1` (OpenGL ES renderer) | SPM `https://github.com/maplibre/maplibre-gl-native-distribution`, exact version `7.0.0`, product `MapLibre` |
+| Dependency | `org.maplibre.gl:android-sdk-opengl:13.7.1` (OpenGL ES renderer; the default `android-sdk` artifact uses Vulkan, which crashes on devices without Vulkan) | SPM `https://github.com/maplibre/maplibre-gl-native-distribution`, exact version `7.0.0`, product `MapLibre` |
 | Minimum OS | **API 24** (Android 7.0). MapLibre requires API 23, so the requested minimum stands. | **iOS 15.5**. ⚠️ Raised from the requested iOS 15.0 because MapLibre iOS 7.0.0 requires 15.5. |
 | Language | Kotlin 2.2+ (the SDK emits Kotlin 2.2 metadata; MapLibre 13.7.1 is built with Kotlin 2.3) | Swift 5.9+ (Xcode 16 or newer) |
 | Compile SDK | **37**. Current AndroidX releases (core, Compose, Lifecycle) require apps to compile against API 37. This does not change the minimum OS. | n/a |
@@ -74,7 +74,7 @@ Compose is a separate Android artifact so that apps using only classic Views don
 
 | Platform | Dependency | Why |
 |---|---|---|
-| Android | `org.maplibre.gl:android-sdk` (`api` scope) | The wrapped SDK. `api` scope lets the experimental escape hatch (§13.2) compile against MapLibre types. |
+| Android | `org.maplibre.gl:android-sdk-opengl` (`api` scope) | The wrapped SDK. `api` scope lets the experimental escape hatch (§13.2) compile against MapLibre types. |
 | Android | `androidx.lifecycle:lifecycle-runtime`, `lifecycle-viewmodel` | Automatic lifecycle binding and retaining state across rotation (§9). Already a transitive dependency of MapLibre and AppCompat. |
 | Android (Compose artifact) | `androidx.compose.ui`, `androidx.compose.runtime`, `androidx.lifecycle:lifecycle-viewmodel-compose` | The Compose entry point |
 | iOS | `MapLibre` | The wrapped SDK |
