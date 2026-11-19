@@ -36,6 +36,11 @@ Targeting **0.1.0** (first beta).
   - Logging hook (`RemaplyMaps.logLevel`, `RemaplyMaps.logger`), MapLibre logs forwarded; default `os.Logger`.
 - iOS sample: SwiftUI and UIKit screens running the reference scenario, plus a bundled demo style.
 
+- **Parity (Phase 4):** `docs/parity-checklist.md` lists all 45 API items, verified on both platforms.
+  - `scripts/check-api-parity.py` compares public API names (types, members, enum cases, parameters) and runs in CI.
+  - `scripts/run-parity-trace.sh` runs the same scripted scenario on both samples and compares the event
+    trace with `docs/parity/expected-trace.txt`, including a render probe of the markers actually drawn.
+
 ### Changed (spec clarifications, Phase 2)
 
 These make existing behavior explicit; no public names or signatures changed.
@@ -46,8 +51,14 @@ These make existing behavior explicit; no public names or signatures changed.
 - §8.2: Taps before `onMapReady` are ignored.
 - §8.3: A cancelled animation emits `onCameraIdle` before `completion(false)`.
 - §9.1 (Phase 3): On iOS, a view deallocated without `onDestroy` releases its map; the controller keeps its state.
+- §8.2 (Phase 4): What the map shows after each kind of style error; gesture physics are platform-native.
+- §11 (Phase 4): MapLibre iOS has no debug/verbose levels for its own messages.
 
 ### Fixed
 
 - iOS CI: create `build/` before writing test logs (tests passed but the job failed on a fresh checkout).
 - iOS CI: pin XcodeGen 2.47.0; the Homebrew build on the runner generated a slightly different sample project.
+- Android + iOS: after a style request rejected with `INVALID_ARGUMENT` or `STYLE_NOT_FOUND`, marker changes
+  stopped rendering until another style loaded. Markers now render into whichever style is on screen.
+- Android: a marker change could intermittently fail to render because MapLibre applied GeoJSON updates on a
+  worker thread. The marker source now updates synchronously.

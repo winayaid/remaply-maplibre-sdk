@@ -37,6 +37,10 @@ internal class MarkerLayer(
         registeredImages.clear()
         style.addImage(DEFAULT_ICON_ID, defaultPinBitmap())
         val newSource = GeoJsonSource(SOURCE_ID)
+        // MapLibre Android applies GeoJSON updates on a worker thread by default, and an update can be
+        // lost when it races with other map work. Markers are few (v1 target: 1,000), so apply updates
+        // synchronously: every marker change is on screen by the next frame, as on iOS (API_SPEC.md §6.5).
+        newSource.setOverrideSynchronousUpdate(true)
         style.addSource(newSource)
         style.addLayer(
             SymbolLayer(LAYER_ID, SOURCE_ID).withProperties(

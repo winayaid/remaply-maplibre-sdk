@@ -7,6 +7,7 @@ import UIKit
 final class UIKitSampleViewController: UIViewController, MapListener {
     private let mapView = RemaplyMapView(style: SampleScenario.style, options: SampleScenario.options)
     private let statusLabel = UILabel()
+    private lazy var parity: ParityScript? = ParityScript.isRequested ? ParityScript(map: mapView) : nil
     var onClose: (() -> Void)?
 
     override func viewDidLoad() {
@@ -61,12 +62,21 @@ final class UIKitSampleViewController: UIViewController, MapListener {
 
     // MARK: MapListener
 
+    func onStyleLoaded(style: MapStyle) {
+        parity?.onStyleLoaded(style)
+    }
+
     func onMapReady(controller: MapController) {
+        if let parity {
+            parity.onMapReady()
+            return
+        }
         SampleScenario.addMarkersIfNeeded(controller)
         statusLabel.text = "Map ready · \(controller.markers.count) markers"
     }
 
     func onMapLoadError(error: MapError) {
+        parity?.onMapLoadError(error)
         statusLabel.text = "Load error: \(error.code)"
     }
 
@@ -78,7 +88,12 @@ final class UIKitSampleViewController: UIViewController, MapListener {
         statusLabel.text = "Marker tap: \(marker.id)"
     }
 
+    func onCameraChange(camera: CameraPosition, reason: CameraChangeReason) {
+        parity?.onCameraChange(camera, reason)
+    }
+
     func onCameraIdle(camera: CameraPosition) {
+        parity?.onCameraIdle(camera)
         statusLabel.text = SampleScenario.describe(camera)
     }
 }

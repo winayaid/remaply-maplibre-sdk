@@ -37,6 +37,12 @@ import com.remaply.maps.compose.rememberMapController
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Parity check: `--ez parity true` opens the View sample running ParityScript.
+        if (intent.getBooleanExtra(ViewSampleActivity.EXTRA_PARITY, false)) {
+            startActivity(Intent(this, ViewSampleActivity::class.java).putExtra(ViewSampleActivity.EXTRA_PARITY, true))
+            finish()
+            return
+        }
         // Manual-testing hook: `adb shell am start -n com.remaply.maps.sample/.MainActivity --es styleUrl <url>`
         // (or `--es styleAsset <path>`) loads a different style, for example to check error reporting.
         val style =

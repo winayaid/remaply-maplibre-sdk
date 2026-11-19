@@ -33,3 +33,6 @@ Package.resolved.bak
 *.keystore
 *.gpg
 secring.*
+
+# Python
+__pycache__/

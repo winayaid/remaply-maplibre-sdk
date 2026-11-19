@@ -19,7 +19,7 @@ struct SwiftUISampleView: View {
     @StateObject private var controller = MapController()
     @State private var status = "Loading map…"
     @State private var camera = ""
-    @State private var showUIKitSample = false
+    @State private var showUIKitSample = ParityScript.isRequested
     private let style = SampleScenario.style
 
     var body: some View {

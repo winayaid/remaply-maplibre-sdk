@@ -386,10 +386,11 @@ internal class MapSession(
     }
 
     private fun syncMarkers() {
+        // Render into whichever style is on screen. A style request rejected before reaching MapLibre
+        // (INVALID_ARGUMENT, STYLE_NOT_FOUND) leaves the previous style and its marker layer in place;
+        // while a new style loads, the layer is reset and sync is a no-op until it is re-installed.
         val style = map?.style ?: return
-        if (style.isFullyLoaded && styleState == StyleState.LOADED) {
-            markerLayer.sync(style, controller.markersInDrawOrder())
-        }
+        if (style.isFullyLoaded) markerLayer.sync(style, controller.markersInDrawOrder())
     }
 
     // ---- Camera ----
