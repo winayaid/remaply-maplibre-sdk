@@ -86,7 +86,10 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
           disable-animations: true
           working-directory: android
-          script: ./gradlew :maps-android:connectedDebugAndroidTest --console=plain
+          # SDK instrumented tests, then the sample-screen tests (Phase 6).
+          script: |
+            ./gradlew :maps-android:connectedDebugAndroidTest --console=plain
+            cd ../samples/android && ./gradlew connectedDebugAndroidTest --console=plain
 
       - name: Upload reports
         if: always()
@@ -96,6 +99,8 @@ jobs:
           path: |
             android/maps/build/reports/androidTests/
             android/maps/build/outputs/androidTest-results/
+            samples/android/app/build/reports/androidTests/
+            samples/android/app/build/outputs/androidTest-results/
           retention-days: 7
 
   sample:

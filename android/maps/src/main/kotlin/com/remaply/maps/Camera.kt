@@ -30,6 +30,11 @@ public data class CameraPosition(
  * An update with every field `null` is a no-op.
  *
  * Spec: API-003.
+ *
+ * @property center New center, or `null` to keep the current one.
+ * @property zoom New zoom level, or `null` to keep the current one.
+ * @property bearing New bearing in degrees, or `null` to keep the current one.
+ * @property tilt New tilt in degrees, or `null` to keep the current one.
  */
 public data class CameraUpdate(
     public val center: GeoCoordinate? = null,

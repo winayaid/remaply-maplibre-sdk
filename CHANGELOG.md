@@ -47,6 +47,16 @@ Targeting **0.1.0** (first beta).
   - iOS integration and leak tests in the package test target, and XCUITests in the sample (taps,
     touch-cancel, rotation) run on every pull request.
 
+- **Documentation and samples (Phase 6):**
+  - Quick starts for Android and iOS (each verified by building a fresh app from the doc), a usage guide
+    with Kotlin and Swift side by side, an attribution guide, and a MapLibre upgrade template.
+  - API reference generated with Dokka (Android) and DocC (iOS); both builds fail on warnings.
+  - Samples restructured into a launcher with five screens on both platforms: basic map, markers and taps,
+    camera animation, Compose/SwiftUI example, classic View/UIKit example. UI tests open every screen.
+  - CI: `docs.yml` (link check, Dokka, DocC) and the sample-screen tests.
+- Android: the SDK removes MapLibre's `ACCESS_FINE_LOCATION` and `ACCESS_COARSE_LOCATION` permissions from apps,
+  because v1 doesn't use location.
+
 ### Changed (spec clarifications, Phase 2)
 
 These make existing behavior explicit; no public names or signatures changed.
@@ -61,6 +71,7 @@ These make existing behavior explicit; no public names or signatures changed.
 - §11 (Phase 4): MapLibre iOS has no debug/verbose levels for its own messages.
 - §9.3 (Phase 5): Compose `rememberMapController` also saves style and camera for process death.
 - §9.4 (Phase 5): Leak checks measure SDK overhead against a plain-MapLibre baseline.
+- §13.1 (Phase 6): The SDK removes MapLibre's location permissions; apps using location declare them.
 
 ### Fixed
 

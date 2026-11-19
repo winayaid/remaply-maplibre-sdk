@@ -3,8 +3,21 @@
 Native SDKs for showing a [MapLibre](https://maplibre.org) map in Android and iOS apps with a few
 lines of code. Both platforms share the same API names, parameters, events, and behavior.
 
-> **Status:** pre-release (0.1.0 in development). The API is defined in
-> [`api-spec/API_SPEC.md`](api-spec/API_SPEC.md); implementation is in progress.
+> **Status:** pre-release. 0.1.0 is feature-complete and tested on both platforms; publishing to Maven
+> Central and the first Swift Package tag are next. See the [CHANGELOG](CHANGELOG.md).
+
+**Get started:** [Android quick start](docs/quickstart-android.md) · [iOS quick start](docs/quickstart-ios.md) ·
+[Usage guide](docs/guide.md) · [All docs](docs/README.md)
+
+```kotlin
+// Android (Compose)
+RemaplyMap(style = MapStyle.url("https://example.com/style.json"), modifier = Modifier.fillMaxSize())
+```
+
+```swift
+// iOS (SwiftUI)
+RemaplyMap(style: .url("https://example.com/style.json")).ignoresSafeArea()
+```
 
 | | Android | iOS |
 |---|---|---|
@@ -49,6 +62,12 @@ open samples/ios/RemaplySample.xcodeproj
 # Lint and consistency checks
 swiftlint lint --strict
 scripts/check-versions.sh
+python3 scripts/check-api-parity.py
+python3 scripts/check-doc-links.py
+
+# API reference (see docs/api-reference.md)
+cd android && ./gradlew :dokkaGenerate
+xcodebuild docbuild -scheme RemaplyMaps -destination 'generic/platform=iOS Simulator'
 ```
 
 After editing `samples/ios/project.yml`, run `cd samples/ios && xcodegen` and commit the regenerated
@@ -66,4 +85,4 @@ project. CI fails if the two are out of sync.
 ## License
 
 BSD 2-Clause. See [`LICENSE`](LICENSE). It also includes MapLibre Native's license and the
-attribution requirements for apps that ship this SDK.
+attribution requirements for apps that ship this SDK; see [docs/attribution.md](docs/attribution.md).

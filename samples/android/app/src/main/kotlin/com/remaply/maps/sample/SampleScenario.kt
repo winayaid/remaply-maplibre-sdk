@@ -16,7 +16,13 @@ import java.util.Locale
  */
 object SampleScenario {
     /** Free, keyless demo style. The SDK never hardcodes a style. */
-    val style: MapStyle = MapStyle.url("https://tiles.openfreemap.org/styles/liberty")
+    private val DEFAULT_STYLE: MapStyle = MapStyle.url("https://tiles.openfreemap.org/styles/liberty")
+
+    /**
+     * The style the sample screens use. The launcher intent extra `sampleStyleAsset` replaces it with
+     * a bundled style without leaving the launcher (used by the sample-screen UI tests).
+     */
+    var style: MapStyle = DEFAULT_STYLE
 
     val options: MapOptions =
         MapOptions(initialCamera = CameraPosition(GeoCoordinate(48.8566, 2.3522), zoom = 12.0))

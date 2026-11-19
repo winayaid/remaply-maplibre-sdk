@@ -13,12 +13,20 @@ enum SampleScenario {
         let defaults = UserDefaults.standard
         if let url = defaults.string(forKey: "styleUrl") { return .url(url) }
         if let asset = defaults.string(forKey: "styleAsset") { return .bundled(asset) }
+        // Same as styleAsset, but stays on the launcher (used by the sample-screen UI tests).
+        if let asset = defaults.string(forKey: "sampleStyleAsset") { return .bundled(asset) }
         return defaultStyle
     }
 
     /// UI tests launch with `-uiTesting YES`: the camera starts centered on marker "b" at zoom 14,
     /// so tap targets do not depend on the screen size.
     static var isUITesting: Bool { UserDefaults.standard.bool(forKey: "uiTesting") }
+
+    /// UI tests and style overrides go straight to the SwiftUI example.
+    static var opensSwiftUIExampleDirectly: Bool {
+        let defaults = UserDefaults.standard
+        return isUITesting || defaults.string(forKey: "styleUrl") != nil || defaults.string(forKey: "styleAsset") != nil
+    }
 
     static var options: MapOptions {
         if isUITesting {

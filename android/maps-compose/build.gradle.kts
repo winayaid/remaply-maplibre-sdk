@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.dokka)
 }
 
 android {
@@ -41,6 +42,26 @@ kotlin {
         jvmTarget.set(JvmTarget.JVM_17)
         languageVersion.set(KotlinVersion.KOTLIN_2_2)
         apiVersion.set(KotlinVersion.KOTLIN_2_2)
+    }
+}
+
+dokka {
+    moduleName.set("maps-android-compose")
+    dokkaSourceSets.configureEach {
+        includes.from("Module.md")
+        reportUndocumented.set(true)
+        sourceLink {
+            localDirectory.set(file("src/main/kotlin"))
+            remoteUrl("https://github.com/winayaid/remaply-maplibre-sdk/tree/main/android/maps-compose/src/main/kotlin")
+            remoteLineSuffix.set("#L")
+        }
+        perPackageOption {
+            matchingRegex.set(".*\\.internal.*")
+            suppress.set(true)
+        }
+    }
+    dokkaPublications.html {
+        failOnWarning.set(true)
     }
 }
 

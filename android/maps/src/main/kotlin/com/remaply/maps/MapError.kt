@@ -9,12 +9,15 @@ package com.remaply.maps
  * Spec: API-060.
  *
  * @property code What went wrong.
+ * @property message Human-readable description. Not part of the contract.
+ * @property cause The underlying error, if any.
  */
 public class MapError(
     public val code: MapErrorCode,
     override val message: String,
     override val cause: Throwable? = null,
 ) : Exception(message, cause) {
+    /** `MapError(code=…, message=…)`, matching iOS. */
     override fun toString(): String = "MapError(code=$code, message=$message)"
 }
 

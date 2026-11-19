@@ -288,6 +288,7 @@ public class RemaplyMapView : FrameLayout {
 
     // ---- Touch: any touch cancels a running camera animation (API_SPEC.md §6.4) ----
 
+    /** Cancels a running camera animation on any touch (API_SPEC.md §6.4), then dispatches as usual. */
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (ev.actionMasked == MotionEvent.ACTION_DOWN) session?.cancelAnimation()
         return super.dispatchTouchEvent(ev)
