@@ -1,0 +1,42 @@
+included:
+  - ios/Sources
+  - ios/Tests
+  - samples/ios/RemaplySample
+  - Package.swift
+
+excluded:
+  - build
+  - .build
+  - samples/ios/RemaplySample.xcodeproj
+
+disabled_rules:
+  # Trailing commas keep diffs to multi-line lists minimal.
+  - trailing_comma
+
+opt_in_rules:
+  - force_unwrapping
+  - empty_count
+  - explicit_init
+  - fatal_error_message
+  - first_where
+  - missing_docs
+  - modifier_order
+  - redundant_nil_coalescing
+  - sorted_imports
+  - unowned_variable_capture
+  - weak_delegate
+
+line_length:
+  warning: 120
+  error: 160
+  ignores_comments: true
+
+missing_docs:
+  # Every public SDK symbol must carry a doc comment (feeds the DocC reference in Phase 6).
+  warning: [open, public]
+
+force_unwrapping:
+  severity: error
+
+identifier_name:
+  excluded: [id, x, y]

@@ -1,0 +1,55 @@
+# XcodeGen spec for the iOS sample app. This file is the source of truth.
+#
+# Regenerate the Xcode project after editing:   cd samples/ios && xcodegen
+# The generated RemaplySample.xcodeproj is committed so the sample opens without extra tools;
+# CI regenerates it and fails if the committed copy is out of date.
+name: RemaplySample
+
+options:
+  bundleIdPrefix: com.remaply.maps
+  deploymentTarget:
+    iOS: "15.5"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+
+packages:
+  # The SDK, consumed from the repository root exactly as apps consume it from Git.
+  RemaplyMaps:
+    path: ../..
+
+targets:
+  RemaplySample:
+    type: application
+    platform: iOS
+    sources:
+      - RemaplySample
+    dependencies:
+      - package: RemaplyMaps
+        product: RemaplyMaps
+    info:
+      path: RemaplySample/Info.plist
+      properties:
+        CFBundleDisplayName: Remaply Sample
+        UILaunchScreen: {}
+        UIApplicationSupportsIndirectInputEvents: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.remaply.maps.sample
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: NO

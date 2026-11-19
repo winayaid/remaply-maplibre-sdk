@@ -1,0 +1,35 @@
+# Build output
+build/
+.build/
+DerivedData/
+
+# Gradle / Android
+.gradle/
+.kotlin/
+local.properties
+captures/
+*.apk
+*.aab
+*.hprof
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Xcode user data (the generated sample project itself is committed)
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+samples/ios/RemaplySample.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/configuration/
+
+# Swift Package Manager
+.swiftpm/
+Package.resolved.bak
+
+# Secrets (signing keys for Maven Central, etc. are provided by CI secrets only)
+*.jks
+*.keystore
+*.gpg
+secring.*

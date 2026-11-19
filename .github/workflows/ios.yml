@@ -1,0 +1,92 @@
+name: iOS
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ios:
+    name: SDK + sample — lint, build, unit tests
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Install tools
+        run: |
+          brew install xcodegen
+          command -v swiftlint >/dev/null || brew install swiftlint
+
+      - name: SwiftLint
+        run: swiftlint lint --strict --reporter github-actions-logging
+
+      - name: Pick and boot simulator
+        id: sim
+        run: |
+          DEST=$(scripts/ios-sim-destination.sh)
+          echo "destination=$DEST" >> "$GITHUB_OUTPUT"
+          UDID="${DEST##*id=}"
+          # Booting up front avoids "test runner timed out while preparing" on cold simulators.
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+
+      - name: Resolve packages
+        run: xcodebuild -resolvePackageDependencies -scheme RemaplyMaps
+
+      - name: SDK unit tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme RemaplyMaps \
+            -destination "${{ steps.sim.outputs.destination }}" \
+            -derivedDataPath build/dd-sdk \
+            -resultBundlePath build/RemaplyMaps.xcresult \
+            | tee build/sdk-test.log | grep -E "Test Case|Executed|error:|warning:|\*\* TEST" || true
+          grep -q "\*\* TEST SUCCEEDED \*\*" build/sdk-test.log
+
+      - name: Sample project is up to date with project.yml
+        working-directory: samples/ios
+        run: |
+          xcodegen
+          if [ -n "$(git status --porcelain -- .)" ]; then
+            echo "::error::samples/ios/RemaplySample.xcodeproj is out of date. Run 'cd samples/ios && xcodegen' and commit."
+            git status --porcelain -- .
+            git diff --stat -- .
+            exit 1
+          fi
+
+      - name: Build sample app
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project samples/ios/RemaplySample.xcodeproj \
+            -scheme RemaplySample \
+            -destination "${{ steps.sim.outputs.destination }}" \
+            -derivedDataPath build/dd-sample \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee build/sample-build.log | grep -E "error:|warning:|\*\* BUILD" || true
+          grep -q "\*\* BUILD SUCCEEDED \*\*" build/sample-build.log
+
+      - name: Upload results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ios-results
+          path: |
+            build/*.xcresult
+            build/*.log
+          retention-days: 7

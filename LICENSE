@@ -1,0 +1,98 @@
+BSD 2-Clause License
+
+Copyright (c) 2026, the Remaply Maps SDK authors
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+================================================================================
+THIRD-PARTY SOFTWARE NOTICES
+================================================================================
+
+This SDK wraps MapLibre Native, which is distributed under its own license.
+The SDK does not modify or redistribute MapLibre source code; MapLibre binaries
+are resolved by your build tool from their official distribution channels:
+
+  - Android: org.maplibre.gl:android-sdk:13.7.1 (Maven Central)
+  - iOS:     https://github.com/maplibre/maplibre-gl-native-distribution 7.0.0
+
+MapLibre Native also bundles third-party components, each under its own
+license. The full list ships with each MapLibre release.
+
+--------------------------------------------------------------------------------
+MapLibre Native — BSD 2-Clause License
+--------------------------------------------------------------------------------
+
+Copyright (c) 2021 MapLibre contributors
+
+Copyright (c) 2018-2021 MapTiler.com
+
+Copyright (c) 2014-2020 Mapbox
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in
+  the documentation and/or other materials provided with the
+  distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+================================================================================
+ATTRIBUTION REQUIREMENTS FOR APPS THAT USE THIS SDK
+================================================================================
+
+Apps that ship this SDK distribute MapLibre Native in binary form. To comply:
+
+1. License notice (required by the BSD 2-Clause License of both MapLibre Native
+   and this SDK). Reproduce both copyright notices and license texts above in
+   your app's documentation or other materials, for example an "Open source
+   licenses" or "Acknowledgements" screen. Also include the notices of the
+   third-party components bundled with MapLibre Native.
+
+2. Map data attribution (required by most tile and data providers, not by
+   MapLibre). The map style you load decides which data you display, and the
+   data provider's terms decide what attribution you must show. For example,
+   OpenStreetMap-based data requires "© OpenStreetMap contributors". The SDK
+   always keeps MapLibre's attribution control visible (API_SPEC.md §5.5) so
+   that the style's attribution text stays reachable. Do not hide or cover it.
+
+3. MapLibre logo. The MapLibre license does not require you to show the logo.
+   The SDK keeps it visible by default in v1.
+
+This section is guidance, not legal advice. Check the terms of every style,
+tile, and data provider you use.
