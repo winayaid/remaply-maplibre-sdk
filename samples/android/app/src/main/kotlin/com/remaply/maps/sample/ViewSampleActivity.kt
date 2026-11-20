@@ -1,9 +1,13 @@
 package com.remaply.maps.sample
 
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.remaply.maps.CameraChangeReason
 import com.remaply.maps.CameraPosition
 import com.remaply.maps.GeoCoordinate
@@ -25,6 +29,15 @@ class ViewSampleActivity : ComponentActivity() {
 
         val map = findViewById<RemaplyMapView>(R.id.map)
         val status = findViewById<TextView>(R.id.status)
+        val panel = findViewById<View>(R.id.panel)
+        // Edge-to-edge: keep the panel below the status bar.
+        ViewCompat.setOnApplyWindowInsetsListener(panel) { view, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+            (view.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
+                bars.top + view.resources.getDimensionPixelSize(R.dimen.panel_margin)
+            view.requestLayout()
+            insets
+        }
         map.options = SampleScenario.options
         val parity = if (intent.getBooleanExtra(EXTRA_PARITY, false)) ParityScript(map) else null
 

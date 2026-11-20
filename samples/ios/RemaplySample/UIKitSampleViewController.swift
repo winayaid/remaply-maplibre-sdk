@@ -32,7 +32,7 @@ final class UIKitSampleViewController: UIViewController, MapListener {
                 guard let self else { return }
                 SampleScenario.reset(self.mapView.controller)
             },
-            makeButton("Close") { [weak self] in self?.onClose?() },
+            makeButton("Close") { [weak self] in self?.onClose?() }.withIdentifier("Close"),
         ])
         buttons.spacing = 8
 
@@ -109,4 +109,11 @@ struct UIKitSampleScreen: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ controller: UIKitSampleViewController, context: Context) {}
+}
+
+private extension UIButton {
+    func withIdentifier(_ identifier: String) -> UIButton {
+        accessibilityIdentifier = identifier
+        return self
+    }
 }

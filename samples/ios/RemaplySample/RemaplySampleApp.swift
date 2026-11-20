@@ -3,27 +3,98 @@ import SwiftUI
 
 @main
 struct RemaplySampleApp: App {
-    init() {
-        print("Remaply Maps \(RemaplyMaps.version) (MapLibre \(RemaplyMaps.mapLibreVersion))")
-    }
-
     var body: some Scene {
         WindowGroup {
-            SwiftUISampleView()
+            SampleLauncher()
         }
     }
 }
 
-/// SwiftUI sample: the reference scenario with `RemaplyMap`.
+/// The samples, in the order of the docs. Each is a small, self-contained screen.
+enum Sample: String, CaseIterable, Identifiable {
+    case basic = "Basic map"
+    case markers = "Markers and taps"
+    case camera = "Camera animation"
+    case swiftUI = "SwiftUI example"
+    case uiKit = "UIKit example"
+
+    var id: String { rawValue }
+
+    var description: String {
+        switch self {
+        case .basic: return "A style and a starting camera. Nothing else."
+        case .markers: return "Add markers by tapping; tap a marker to select it."
+        case .camera: return "Animate, jump, rotate, tilt; see camera events."
+        case .swiftUI: return "The reference scenario with RemaplyMap."
+        case .uiKit: return "The reference scenario with RemaplyMapView."
+        }
+    }
+}
+
+/// Sample launcher.
+///
+/// Testing hooks (launch arguments):
+/// - `-parity YES` opens the UIKit example running the parity script (docs/parity-checklist.md).
+/// - `-uiTesting YES`, `-styleUrl <url>`, or `-styleAsset <path>` open the SwiftUI example directly.
+struct SampleLauncher: View {
+    @State private var showUIKit = ParityScript.isRequested
+    @State private var showSwiftUIExample = SampleScenario.opensSwiftUIExampleDirectly
+
+    var body: some View {
+        if showSwiftUIExample {
+            SwiftUISampleView()
+        } else {
+            NavigationView {
+                List {
+                    Section(footer: Text("SDK \(RemaplyMaps.version) · MapLibre \(RemaplyMaps.mapLibreVersion)")) {
+                        ForEach(Sample.allCases) { sample in
+                            if sample == .uiKit {
+                                Button { showUIKit = true } label: { row(sample) }
+                            } else {
+                                NavigationLink(destination: destination(sample)) { row(sample) }
+                            }
+                        }
+                    }
+                }
+                .navigationTitle("Remaply Maps")
+            }
+            .navigationViewStyle(.stack)
+            .fullScreenCover(isPresented: $showUIKit) {
+                UIKitSampleScreen()
+            }
+        }
+    }
+
+    private func row(_ sample: Sample) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(sample.rawValue).foregroundColor(SampleColors.accent)
+            Text(sample.description).font(.footnote).foregroundColor(.secondary)
+        }
+        .padding(.vertical, 4)
+    }
+
+    @ViewBuilder
+    private func destination(_ sample: Sample) -> some View {
+        switch sample {
+        case .basic: BasicMapView()
+        case .markers: MarkersAndTapsView()
+        case .camera: CameraAnimationView()
+        case .swiftUI: SwiftUISampleView()
+        case .uiKit: EmptyView()
+        }
+    }
+}
+
+/// Sample 4: the SwiftUI example. Runs the reference scenario (API_SPEC.md §16), which the
+/// Android Compose example mirrors: three markers, taps, an animation, and every event.
 struct SwiftUISampleView: View {
     @StateObject private var controller = MapController()
     @State private var status = "Loading map…"
     @State private var camera = ""
-    @State private var showUIKitSample = ParityScript.isRequested
     private let style = SampleScenario.style
 
     var body: some View {
-        ZStack(alignment: .top) {
+        MapScreen {
             RemaplyMap(
                 style: style,
                 controller: controller,
@@ -38,50 +109,18 @@ struct SwiftUISampleView: View {
                 onCameraChange: { camera = SampleScenario.describe($0, reason: $1) },
                 onCameraIdle: { camera = "Idle · \(SampleScenario.describe($0))" }
             )
-            .ignoresSafeArea()
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(status).font(.system(size: 15)).accessibilityIdentifier("status")
-                Text(camera).font(.system(size: 13)).foregroundColor(.secondary).accessibilityIdentifier("camera")
-                HStack {
-                    SampleButton("Animate") {
-                        SampleScenario.animate(controller) { finished in status = "Animation finished: \(finished)" }
-                    }
-                    SampleButton("Reset") { SampleScenario.reset(controller) }
-                    SampleButton("UIKit sample") { showUIKitSample = true }
+        } panel: {
+            StatusText(text: status)
+            StatusText(text: camera, secondary: true)
+            HStack {
+                SampleButton("Animate") {
+                    SampleScenario.animate(controller) { finished in status = "Animation finished: \(finished)" }
                 }
-                .padding(.top, 4)
+                SampleButton("Reset") { SampleScenario.reset(controller) }
             }
-            .padding(12)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.white.opacity(0.9))
-            .cornerRadius(8)
-            .padding(12)
+            .padding(.top, 4)
         }
-        .fullScreenCover(isPresented: $showUIKitSample) {
-            UIKitSampleScreen()
-        }
-    }
-}
-
-struct SampleButton: View {
-    private let title: String
-    private let action: () -> Void
-
-    init(_ title: String, action: @escaping () -> Void) {
-        self.title = title
-        self.action = action
-    }
-
-    var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.system(size: 14))
-                .foregroundColor(.white)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color(red: 0, green: 0x79 / 255.0, blue: 0x6B / 255.0))
-                .cornerRadius(6)
-        }
+        .navigationTitle("SwiftUI example")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

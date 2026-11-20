@@ -24,7 +24,7 @@ This document defines every public type, method, parameter, callback, default va
 9. [Lifecycle and state retention](#9-lifecycle-and-state-retention)
 10. [Errors](#10-errors)
 11. [Logging and error reporting](#11-logging-and-error-reporting)
-12. [Global SDK object: `RemaplyMaps`](#12-global-sdk-object-remaplymaps)
+12. [Global SDK object: `RemaplyMaps`](#12-global-sdk-object-remaplymaps--api-080)
 13. [Extension points](#13-extension-points)
 14. [Behavior constants](#14-behavior-constants)
 15. [Out of scope for v1](#15-out-of-scope-for-v1)
@@ -858,6 +858,8 @@ v1 doesn't show user location. Two things are reserved for a later minor release
 - **Responsibility:** permissions will stay the app's job; the SDK will never request them.
 
 Until then, apps can enable MapLibre's location component through the escape hatch below.
+
+**Permissions (Android).** The SDK removes the location permissions that MapLibre's manifest declares, so apps that don't use location don't request them. An app that enables location through the escape hatch declares `ACCESS_FINE_LOCATION` / `ACCESS_COARSE_LOCATION` in its own manifest.
 
 ### 13.2 Native map escape hatch (experimental) — API-091
 

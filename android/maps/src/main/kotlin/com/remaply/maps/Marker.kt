@@ -35,10 +35,13 @@ public data class Marker(
 public class MarkerIcon private constructor(
     internal val bitmap: Bitmap?,
 ) {
+    /** `true` when both are the default pin, or both wrap the same [Bitmap] instance. */
     override fun equals(other: Any?): Boolean = other is MarkerIcon && other.bitmap === bitmap
 
+    /** Identity hash of the wrapped bitmap, consistent with [equals]. */
     override fun hashCode(): Int = System.identityHashCode(bitmap)
 
+    /** `MarkerIcon(defaultPin)` or `MarkerIcon(image)`. */
     override fun toString(): String = if (bitmap == null) "MarkerIcon(defaultPin)" else "MarkerIcon(image)"
 
     /** Factories with the same call sites as on iOS. */

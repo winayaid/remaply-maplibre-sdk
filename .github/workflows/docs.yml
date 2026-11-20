@@ -1,0 +1,67 @@
+name: Docs
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: Markdown links
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - run: python3 scripts/check-doc-links.py
+
+  android-reference:
+    name: API reference (Android, Dokka)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v6
+      # Fails on any warning, including undocumented public declarations.
+      - name: Generate
+        working-directory: android
+        run: ./gradlew :dokkaGenerate --console=plain
+      - uses: actions/upload-artifact@v7
+        with:
+          name: api-reference-android
+          path: android/build/dokka/html/
+          retention-days: 14
+
+  ios-reference:
+    name: API reference (iOS, DocC)
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      # Fails on any DocC warning, such as an unresolved symbol link.
+      - name: Generate
+        run: |
+          set -o pipefail
+          xcodebuild docbuild \
+            -scheme RemaplyMaps \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/docc \
+            OTHER_DOCC_FLAGS=--warnings-as-errors \
+            | grep -E "warning:|error:|\*\* BUILD" || true
+          test -d build/docc/Build/Products/Debug-iphonesimulator/RemaplyMaps.doccarchive
+      - uses: actions/upload-artifact@v7
+        with:
+          name: api-reference-ios
+          path: build/docc/Build/Products/Debug-iphonesimulator/RemaplyMaps.doccarchive
+          retention-days: 14

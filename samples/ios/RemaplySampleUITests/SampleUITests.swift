@@ -39,6 +39,23 @@ final class SampleUITests: XCTestCase {
         waitForStatus(prefix: "Map tap: ")
     }
 
+    /// Each tap must be reported on its own, without waiting for the next touch.
+    func testConsecutiveMapTapsAreEachReportedPromptly() {
+        let window = app.windows.firstMatch
+        let status = app.staticTexts["status"]
+        let points = [CGVector(dx: 0.25, dy: 0.8), CGVector(dx: 0.75, dy: 0.75), CGVector(dx: 0.3, dy: 0.6)]
+        var seen: [String] = []
+        for point in points {
+            let before = status.label
+            window.coordinate(withNormalizedOffset: point).tap()
+            let changed = NSPredicate(format: "label BEGINSWITH 'Map tap: ' AND label != %@", before)
+            let result = XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: changed, object: status)], timeout: 3)
+            XCTAssertEqual(result, .completed, "tap at \(point) was not reported within 3 s (status '\(status.label)')")
+            seen.append(status.label)
+        }
+        XCTAssertEqual(Set(seen).count, points.count, "each tap reports its own coordinate: \(seen)")
+    }
+
     func testAnimationCompletes() {
         app.buttons["Animate"].tap()
         waitForStatus(prefix: "Animation finished: true")

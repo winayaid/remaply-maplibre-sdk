@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="panel_margin">12dp</dimen>
+    <!-- Room for the map's compass, which sits in the top-right corner. -->
+    <dimen name="compass_clearance">64dp</dimen>
+</resources>

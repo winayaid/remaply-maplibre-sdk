@@ -12,7 +12,12 @@
 		6DE322CA0DBABD92AB0B9F99 /* SampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF787B6A5DB2FF85629EE074 /* SampleUITests.swift */; };
 		6EE4C553912EBAA9E2FB793A /* styles in Resources */ = {isa = PBXBuildFile; fileRef = EF18404DBAC0CE5E539975D1 /* styles */; };
 		7D2E5596303325EBC4D14BF2 /* SampleScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A8352372755B5779D95C0 /* SampleScenario.swift */; };
+		7D90E60AA8D1AF222166D794 /* SampleUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0F2A828840C5BAD8A8C01F /* SampleUI.swift */; };
 		94E88FE053255EFE209F508F /* ParityScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401CABDDF29E8025C096EEF9 /* ParityScript.swift */; };
+		9ACABD7DBA20EFBC961FB9C9 /* MarkersAndTapsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716B5DA6F87A67ABFCCD0F14 /* MarkersAndTapsView.swift */; };
+		9CB1CC21610E8FE8E449EFD6 /* BasicMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A9B199BFE98546221F2E2F /* BasicMapView.swift */; };
+		AEA37FF99F93F7643593CBE4 /* SampleScreensUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3906078E358524C83723D9B /* SampleScreensUITests.swift */; };
+		C11ED2C7A6B9DBA5C1B3287F /* CameraAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB08D6BF1EC523EE26EAD41B /* CameraAnimationView.swift */; };
 		DD15BD8E8921D54AB0962540 /* RemaplySampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8A3AD01AA1CBF448F1F201 /* RemaplySampleApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,12 +32,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B0F2A828840C5BAD8A8C01F /* SampleUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleUI.swift; sourceTree = "<group>"; };
 		401CABDDF29E8025C096EEF9 /* ParityScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParityScript.swift; sourceTree = "<group>"; };
 		68173BA8C85CD403FC0FB741 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		68BD5BB4AFD6428E06BE4D8C /* remaply-maplibre-sdk */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "remaply-maplibre-sdk"; path = ../..; sourceTree = SOURCE_ROOT; };
+		716B5DA6F87A67ABFCCD0F14 /* MarkersAndTapsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkersAndTapsView.swift; sourceTree = "<group>"; };
 		8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitSampleViewController.swift; sourceTree = "<group>"; };
 		A3EC9ABB8D339E5CD9EA4C7C /* RemaplySample.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RemaplySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB08D6BF1EC523EE26EAD41B /* CameraAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAnimationView.swift; sourceTree = "<group>"; };
+		B1A9B199BFE98546221F2E2F /* BasicMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicMapView.swift; sourceTree = "<group>"; };
 		B54A8352372755B5779D95C0 /* SampleScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleScenario.swift; sourceTree = "<group>"; };
+		D3906078E358524C83723D9B /* SampleScreensUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleScreensUITests.swift; sourceTree = "<group>"; };
 		E6015150C5BA94F442738376 /* RemaplySampleUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RemaplySampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF18404DBAC0CE5E539975D1 /* styles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = styles; path = Resources/styles; sourceTree = SOURCE_ROOT; };
 		EF787B6A5DB2FF85629EE074 /* SampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleUITests.swift; sourceTree = "<group>"; };
@@ -79,6 +89,7 @@
 		AEEB1D60A2B7C8EA8CE7C45D /* RemaplySampleUITests */ = {
 			isa = PBXGroup;
 			children = (
+				D3906078E358524C83723D9B /* SampleScreensUITests.swift */,
 				EF787B6A5DB2FF85629EE074 /* SampleUITests.swift */,
 			);
 			path = RemaplySampleUITests;
@@ -98,10 +109,14 @@
 		FE3E366B1EE24FCEB9A26E2B /* RemaplySample */ = {
 			isa = PBXGroup;
 			children = (
+				B1A9B199BFE98546221F2E2F /* BasicMapView.swift */,
+				AB08D6BF1EC523EE26EAD41B /* CameraAnimationView.swift */,
 				68173BA8C85CD403FC0FB741 /* Info.plist */,
+				716B5DA6F87A67ABFCCD0F14 /* MarkersAndTapsView.swift */,
 				401CABDDF29E8025C096EEF9 /* ParityScript.swift */,
 				FA8A3AD01AA1CBF448F1F201 /* RemaplySampleApp.swift */,
 				B54A8352372755B5779D95C0 /* SampleScenario.swift */,
+				3B0F2A828840C5BAD8A8C01F /* SampleUI.swift */,
 				8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */,
 			);
 			path = RemaplySample;
@@ -207,6 +222,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEA37FF99F93F7643593CBE4 /* SampleScreensUITests.swift in Sources */,
 				6DE322CA0DBABD92AB0B9F99 /* SampleUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,9 +231,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CB1CC21610E8FE8E449EFD6 /* BasicMapView.swift in Sources */,
+				C11ED2C7A6B9DBA5C1B3287F /* CameraAnimationView.swift in Sources */,
+				9ACABD7DBA20EFBC961FB9C9 /* MarkersAndTapsView.swift in Sources */,
 				94E88FE053255EFE209F508F /* ParityScript.swift in Sources */,
 				DD15BD8E8921D54AB0962540 /* RemaplySampleApp.swift in Sources */,
 				7D2E5596303325EBC4D14BF2 /* SampleScenario.swift in Sources */,
+				7D90E60AA8D1AF222166D794 /* SampleUI.swift in Sources */,
 				34A3A1603CC5D29057208FEA /* UIKitSampleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
