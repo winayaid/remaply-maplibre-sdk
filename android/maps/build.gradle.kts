@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -73,6 +74,13 @@ dokka {
     }
     dokkaPublications.html {
         failOnWarning.set(true)
+    }
+}
+
+mavenPublishing {
+    pom {
+        name.set("Remaply Maps SDK for Android")
+        description.set("Map SDK for Android built on MapLibre Native: map view, camera, markers, and events.")
     }
 }
 

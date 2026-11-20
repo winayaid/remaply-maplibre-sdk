@@ -23,6 +23,9 @@ dependencies {
 }
 ```
 
+If your organization hosts the SDK in a private Maven repository instead, add that repository next to
+`mavenCentral()`; see [Releasing › Private Maven repository](releasing.md#4-private-maven-repository-optional).
+
 ### Option B: from source
 
 1. Clone the SDK next to your project:

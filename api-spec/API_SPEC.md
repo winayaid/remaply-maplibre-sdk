@@ -64,7 +64,7 @@ This document defines every public type, method, parameter, callback, default va
 | Core artifact / product | `com.remaply:maps-android:0.1.0` | Swift package at the repo root, product `RemaplyMaps` |
 | Compose artifact | `com.remaply:maps-android-compose:0.1.0` (depends on the core artifact) | Not needed. SwiftUI support ships in `RemaplyMaps`. |
 | Kotlin package / Swift module | `com.remaply.maps` (Compose: `com.remaply.maps.compose`) | `RemaplyMaps` |
-| Repository | Maven Central, with a configurable private repo (Phase 7) | Git tag per version, for example `0.1.0` |
+| Repository | Maven Central, with a configurable private repo ([docs/releasing.md](../docs/releasing.md)) | Git tag per version, for example `0.1.0` |
 
 Compose is a separate Android artifact so that apps using only classic Views don't pull in Compose.
 

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -62,6 +63,13 @@ dokka {
     }
     dokkaPublications.html {
         failOnWarning.set(true)
+    }
+}
+
+mavenPublishing {
+    pom {
+        name.set("Remaply Maps SDK for Android — Compose")
+        description.set("Jetpack Compose entry point for the Remaply Maps SDK for Android.")
     }
 }
 

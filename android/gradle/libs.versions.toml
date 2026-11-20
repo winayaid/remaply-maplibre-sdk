@@ -10,6 +10,8 @@ maplibre = "13.7.1"
 ktlintGradle = "14.2.0"
 # Build-time only: generates the API reference from KDoc. Not shipped with the SDK.
 dokka = "2.3.0"
+# Build-time only: publishes to Maven Central (Central Portal) or a private Maven repo.
+mavenPublish = "0.37.0"
 
 compileSdk = "37"
 minSdk = "24"
@@ -62,3 +64,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }

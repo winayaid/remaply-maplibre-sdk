@@ -44,9 +44,19 @@ kotlin {
     }
 }
 
+// The SDK version from ../../android/gradle.properties, so the sample also resolves published artifacts.
+val sdkVersion: String =
+    providers
+        .fileContents(rootProject.layout.projectDirectory.file("../../android/gradle.properties"))
+        .asText
+        .get()
+        .lineSequence()
+        .first { it.startsWith("VERSION_NAME=") }
+        .substringAfter("=")
+
 dependencies {
-    implementation("com.remaply:maps-android")
-    implementation("com.remaply:maps-android-compose")
+    implementation("com.remaply:maps-android:$sdkVersion")
+    implementation("com.remaply:maps-android-compose:$sdkVersion")
     implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core)
