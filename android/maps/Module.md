@@ -1,9 +1,9 @@
-# Module maps-android
+# Module remaply-maps-trial-android
 
 Show a MapLibre map in an Android app with a few lines of code: classic Views and the shared core.
 
 The SDK wraps MapLibre Native Android 13.7.1. You always choose the map style; the SDK never adds a
-tile provider. Jetpack Compose support is in the `maps-android-compose` module.
+tile provider. Jetpack Compose support is in the `remaply-maps-trial-compose` module.
 
 ## Where to start
 

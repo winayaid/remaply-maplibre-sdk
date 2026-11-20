@@ -11,13 +11,13 @@ You also need a map style URL. Examples here use the free, keyless
 1. In Xcode, choose **File › Add Package Dependencies…**
 2. Enter `https://github.com/winayaid/remaply-maplibre-sdk`.
 3. Set the dependency rule:
-   **Up to Next Major Version**, `0.1.0`.
+   **Up to Next Major Version**, `0.0.1`.
 4. Add the **RemaplyMaps** product to your app target.
 
 Or, in a `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/winayaid/remaply-maplibre-sdk", from: "0.1.0"),
+.package(url: "https://github.com/winayaid/remaply-maplibre-sdk", from: "0.0.1"),
 // target dependency:
 .product(name: "RemaplyMaps", package: "remaply-maplibre-sdk"),
 ```

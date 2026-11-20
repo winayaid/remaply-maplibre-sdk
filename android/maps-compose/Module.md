@@ -1,4 +1,4 @@
-# Module maps-android-compose
+# Module remaply-maps-trial-compose
 
 Jetpack Compose support for the Remaply Maps SDK.
 

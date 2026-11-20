@@ -76,6 +76,6 @@ dokka {
 }
 
 dependencies {
-    dokka(project(":maps-android"))
-    dokka(project(":maps-android-compose"))
+    dokka(project(":remaply-maps-trial-android"))
+    dokka(project(":remaply-maps-trial-compose"))
 }

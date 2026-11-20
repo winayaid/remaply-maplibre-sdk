@@ -15,7 +15,7 @@ android {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "0.1.0"
+        versionName = "0.0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -55,8 +55,8 @@ val sdkVersion: String =
         .substringAfter("=")
 
 dependencies {
-    implementation("io.github.winayaid:maps-android:$sdkVersion")
-    implementation("io.github.winayaid:maps-android-compose:$sdkVersion")
+    implementation("io.github.winayaid:remaply-maps-trial-android:$sdkVersion")
+    implementation("io.github.winayaid:remaply-maps-trial-compose:$sdkVersion")
     implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core)

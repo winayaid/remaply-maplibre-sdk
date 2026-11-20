@@ -128,7 +128,7 @@ git push origin 0.1.0
 scripts/check-spm-consumer.sh https://github.com/winayaid/remaply-maplibre-sdk 0.1.0
 ```
 
-For Android, follow [option A of the quick start](quickstart-android.md#option-a-maven-central-from-010) in an empty
+For Android, follow [option A of the quick start](quickstart-android.md#option-a-maven-central-from-001) in an empty
 project.
 
 ## If something goes wrong

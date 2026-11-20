@@ -1,7 +1,7 @@
-# Beta testing (0.1.x)
+# Beta testing
 
-0.1.0 is the first beta. Everything in the [test report](test-report.md) ran on emulators and simulators; the beta
-closes the gaps that need real devices and real apps. Fixes ship as 0.1.x patch releases
+The first published version (0.0.1, a trial) starts the beta. Everything in the [test report](test-report.md) ran on emulators and simulators; the beta
+closes the gaps that need real devices and real apps. Fixes ship as patch releases
 ([releasing.md](releasing.md)).
 
 ## What the beta must answer
@@ -52,7 +52,7 @@ once they are public: `./gradlew -PremaplyFromMavenLocal=true installDebug` afte
 | 12 | Open **Compose / SwiftUI** and **classic View / UIKit** examples | Same scenario and result on both |
 
 B2: on Android, run the leak test on the device, which compares the SDK with a plain-MapLibre baseline:
-`(cd android && ./gradlew :maps-android:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.remaply.maps.LeakTest)`.
+`(cd android && ./gradlew :remaply-maps-trial-android:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.remaply.maps.LeakTest)`.
 Record both numbers it logs.
 
 B5: follow the [Android](quickstart-android.md) and [iOS](quickstart-ios.md) quick starts in a new app on the

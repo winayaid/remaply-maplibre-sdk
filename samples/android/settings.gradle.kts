@@ -31,7 +31,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "remaply-maps-sample"
 
-// Composite build: `io.github.winayaid:maps-android` and `io.github.winayaid:maps-android-compose` resolve to the
+// Composite build: `io.github.winayaid:remaply-maps-trial-android` and `io.github.winayaid:remaply-maps-trial-compose` resolve to the
 // local SDK sources in ../../android instead of a published artifact. Apps outside this repo use
 // the Maven coordinates documented in docs/.
 if (!fromMavenLocal) {

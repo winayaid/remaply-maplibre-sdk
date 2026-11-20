@@ -10,7 +10,7 @@ public enum RemaplyMaps {
     /// Version of the Remaply Maps SDK, following semantic versioning (for example `"0.1.0"`).
     ///
     /// Must match `VERSION_NAME` in `android/gradle.properties`; `scripts/check-versions.sh` enforces this.
-    public static let version: String = "0.1.0"
+    public static let version: String = "0.0.1"
 
     /// Exact version of MapLibre Native iOS that this SDK wraps (for example `"7.0.0"`).
     ///

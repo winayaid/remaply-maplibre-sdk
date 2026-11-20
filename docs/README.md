@@ -32,4 +32,4 @@ Run them with `cd samples/android && ./gradlew installDebug` and `open samples/i
 - [Parity checklist](parity-checklist.md): every API item verified on Android and iOS
 - [MapLibre upgrade template](maplibre-upgrade-template.md): checklist for every MapLibre version change
 - [Releasing](releasing.md): publishing to Maven Central, a private Maven repo, and SPM tags
-- [Beta testing](beta-testing.md): the 0.1.x beta device matrix and checklist
+- [Beta testing](beta-testing.md): the beta device matrix and checklist

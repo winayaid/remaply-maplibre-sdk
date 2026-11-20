@@ -9,15 +9,17 @@ and add an entry here (API_SPEC.md §17).
 
 ## [Unreleased]
 
-## [0.1.0] - 2026-11-20
+## [0.0.1] - 2026-11-20
 
-First beta. See [docs/beta-testing.md](docs/beta-testing.md).
+Trial release to test publishing to Maven Central and SPM. Android artifacts are
+`io.github.winayaid:remaply-maps-trial-android` and `remaply-maps-trial-compose`; the final SDK will use other
+coordinates. See [docs/beta-testing.md](docs/beta-testing.md).
 
 ### Added
 
 - Public API specification for both platforms: `api-spec/API_SPEC.md` (approved in Phase 0).
 - Repository layout: `api-spec/`, `android/`, `ios/`, `samples/android/`, `samples/ios/`, `docs/`.
-- Android SDK build (`io.github.winayaid:maps-android`, `io.github.winayaid:maps-android-compose`) wrapping
+- Android SDK build (`io.github.winayaid:remaply-maps-trial-android`, `io.github.winayaid:remaply-maps-trial-compose`) wrapping
   MapLibre Native Android 13.7.1. Minimum API 24, compileSdk 37.
 - iOS Swift package (`RemaplyMaps`) wrapping MapLibre Native iOS 7.0.0. Minimum iOS 15.5.
 - `RemaplyMaps.version` and `RemaplyMaps.mapLibreVersion` on both platforms.
@@ -85,8 +87,9 @@ These make existing behavior explicit; no public names or signatures changed.
 - §9.3 (Phase 5): Compose `rememberMapController` also saves style and camera for process death.
 - §9.4 (Phase 5): Leak checks measure SDK overhead against a plain-MapLibre baseline.
 - §13.1 (Phase 6): The SDK removes MapLibre's location permissions; apps using location declare them.
-- §2 (release): The Maven group is `io.github.winayaid` (Maven Central namespace verified through GitHub)
-  instead of the proposed `com.remaply`. Kotlin packages are unchanged.
+- §2 (release): The trial publishes as `io.github.winayaid:remaply-maps-trial-android` and
+  `io.github.winayaid:remaply-maps-trial-compose` instead of the proposed `com.remaply:maps-android*`. Kotlin
+  packages are unchanged.
 
 ### Fixed
 

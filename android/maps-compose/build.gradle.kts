@@ -47,7 +47,7 @@ kotlin {
 }
 
 dokka {
-    moduleName.set("maps-android-compose")
+    moduleName.set("remaply-maps-trial-compose")
     dokkaSourceSets.configureEach {
         includes.from("Module.md")
         reportUndocumented.set(true)
@@ -68,13 +68,13 @@ dokka {
 
 mavenPublishing {
     pom {
-        name.set("Remaply Maps SDK for Android — Compose")
+        name.set("Remaply Maps SDK for Android — Compose (trial)")
         description.set("Jetpack Compose entry point for the Remaply Maps SDK for Android.")
     }
 }
 
 dependencies {
-    api(project(":maps-android"))
+    api(project(":remaply-maps-trial-android"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.runtime)

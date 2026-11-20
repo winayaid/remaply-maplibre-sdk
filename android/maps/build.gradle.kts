@@ -58,7 +58,7 @@ kotlin {
 }
 
 dokka {
-    moduleName.set("maps-android")
+    moduleName.set("remaply-maps-trial-android")
     dokkaSourceSets.configureEach {
         includes.from("Module.md")
         reportUndocumented.set(true)
@@ -79,7 +79,7 @@ dokka {
 
 mavenPublishing {
     pom {
-        name.set("Remaply Maps SDK for Android")
+        name.set("Remaply Maps SDK for Android (trial)")
         description.set("Map SDK for Android built on MapLibre Native: map view, camera, markers, and events.")
     }
 }

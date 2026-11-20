@@ -126,7 +126,7 @@ The 0.1.x beta covers issues 1, 2, 4, and 5; see [beta-testing.md](beta-testing.
 # Android unit + lint
 (cd android && ./gradlew check)
 # Android instrumented (needs a running emulator or device)
-(cd android && ./gradlew :maps-android:connectedDebugAndroidTest)
+(cd android && ./gradlew :remaply-maps-trial-android:connectedDebugAndroidTest)
 
 # iOS unit + integration + leak
 xcodebuild test -scheme RemaplyMaps -destination "$(scripts/ios-sim-destination.sh)"

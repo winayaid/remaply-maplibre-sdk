@@ -18,8 +18,8 @@ GROUP = "io.github.winayaid"
 
 # artifact -> dependencies that must be in compile scope (exposed to apps)
 ARTIFACTS = {
-    "maps-android": ["org.maplibre.gl:android-sdk-opengl"],
-    "maps-android-compose": [f"{GROUP}:maps-android"],
+    "remaply-maps-trial-android": ["org.maplibre.gl:android-sdk-opengl"],
+    "remaply-maps-trial-compose": [f"{GROUP}:remaply-maps-trial-android"],
 }
 REQUIRED_POM_FIELDS = [
     "m:name", "m:description", "m:url",
