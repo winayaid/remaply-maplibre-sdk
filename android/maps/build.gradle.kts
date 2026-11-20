@@ -4,15 +4,18 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.maven.publish)
 }
 
 android {
-    namespace = "com.remaply.maps"
+    namespace = "io.github.winayaid.mapstrial"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         consumerProguardFiles("consumer-rules.pro")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "SDK_VERSION", "\"${project.version}\"")
         buildConfigField("String", "MAPLIBRE_VERSION", "\"${libs.versions.maplibre.get()}\"")
     }
@@ -54,6 +57,33 @@ kotlin {
     }
 }
 
+dokka {
+    moduleName.set("remaply-maps-trial-android")
+    dokkaSourceSets.configureEach {
+        includes.from("Module.md")
+        reportUndocumented.set(true)
+        sourceLink {
+            localDirectory.set(file("src/main/kotlin"))
+            remoteUrl("https://github.com/winayaid/remaply-maplibre-sdk/tree/main/android/maps/src/main/kotlin")
+            remoteLineSuffix.set("#L")
+        }
+        perPackageOption {
+            matchingRegex.set(".*\\.internal.*")
+            suppress.set(true)
+        }
+    }
+    dokkaPublications.html {
+        failOnWarning.set(true)
+    }
+}
+
+mavenPublishing {
+    pom {
+        name.set("Remaply Maps SDK for Android (trial)")
+        description.set("Map SDK for Android built on MapLibre Native: map view, camera, markers, and events.")
+    }
+}
+
 dependencies {
     // `api` scope: required by the experimental `withNativeMap` escape hatch (API_SPEC.md §13.2).
     api(libs.maplibre.android)
@@ -63,4 +93,12 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
 
     testImplementation(libs.junit4)
+
+    // Instrumented tests (Phase 5). Test-only dependencies; nothing here ships with the SDK.
+    androidTestImplementation(libs.junit4)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.activity)
+    androidTestImplementation(libs.okhttp)
 }

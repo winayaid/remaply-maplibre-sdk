@@ -1,40 +1,126 @@
-import MapLibre
 import RemaplyMaps
 import SwiftUI
 
-/// Phase 1 foundation sample: shows a map with the demo style and nothing else.
-///
-/// This temporarily wraps MapLibre's `MLNMapView` directly (reached through the SDK's
-/// dependency) to prove that the build, the pinned MapLibre version, and rendering all work.
-/// Phase 3 replaces it with the SDK's `RemaplyMap` SwiftUI view.
 @main
 struct RemaplySampleApp: App {
-    init() {
-        print("Remaply Maps \(RemaplyMaps.version) (MapLibre \(RemaplyMaps.mapLibreVersion))")
-    }
-
     var body: some Scene {
         WindowGroup {
-            FoundationMapView(styleURL: SampleConstants.demoStyleURL)
-                .ignoresSafeArea()
+            SampleLauncher()
         }
     }
 }
 
-enum SampleConstants {
-    /// Free, keyless demo style (API_SPEC.md §16). The SDK never hardcodes a style.
-    static let demoStyleURL = "https://tiles.openfreemap.org/styles/liberty"
+/// The samples, in the order of the docs. Each is a small, self-contained screen.
+enum Sample: String, CaseIterable, Identifiable {
+    case basic = "Basic map"
+    case markers = "Markers and taps"
+    case camera = "Camera animation"
+    case swiftUI = "SwiftUI example"
+    case uiKit = "UIKit example"
+
+    var id: String { rawValue }
+
+    var description: String {
+        switch self {
+        case .basic: return "A style and a starting camera. Nothing else."
+        case .markers: return "Add markers by tapping; tap a marker to select it."
+        case .camera: return "Animate, jump, rotate, tilt; see camera events."
+        case .swiftUI: return "The reference scenario with RemaplyMap."
+        case .uiKit: return "The reference scenario with RemaplyMapView."
+        }
+    }
 }
 
-/// Minimal SwiftUI wrapper around `MLNMapView`. Phase 1 only.
-struct FoundationMapView: UIViewRepresentable {
-    let styleURL: String
+/// Sample launcher.
+///
+/// Testing hooks (launch arguments):
+/// - `-parity YES` opens the UIKit example running the parity script (docs/parity-checklist.md).
+/// - `-uiTesting YES`, `-styleUrl <url>`, or `-styleAsset <path>` open the SwiftUI example directly.
+struct SampleLauncher: View {
+    @State private var showUIKit = ParityScript.isRequested
+    @State private var showSwiftUIExample = SampleScenario.opensSwiftUIExampleDirectly
 
-    func makeUIView(context: Context) -> MLNMapView {
-        let mapView = MLNMapView(frame: .zero, styleURL: URL(string: styleURL))
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        return mapView
+    var body: some View {
+        if showSwiftUIExample {
+            SwiftUISampleView()
+        } else {
+            NavigationView {
+                List {
+                    Section(footer: Text("SDK \(RemaplyMaps.version) · MapLibre \(RemaplyMaps.mapLibreVersion)")) {
+                        ForEach(Sample.allCases) { sample in
+                            if sample == .uiKit {
+                                Button { showUIKit = true } label: { row(sample) }
+                            } else {
+                                NavigationLink(destination: destination(sample)) { row(sample) }
+                            }
+                        }
+                    }
+                }
+                .navigationTitle("Remaply Maps")
+            }
+            .navigationViewStyle(.stack)
+            .fullScreenCover(isPresented: $showUIKit) {
+                UIKitSampleScreen()
+            }
+        }
     }
 
-    func updateUIView(_ uiView: MLNMapView, context: Context) {}
+    private func row(_ sample: Sample) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(sample.rawValue).foregroundColor(SampleColors.accent)
+            Text(sample.description).font(.footnote).foregroundColor(.secondary)
+        }
+        .padding(.vertical, 4)
+    }
+
+    @ViewBuilder
+    private func destination(_ sample: Sample) -> some View {
+        switch sample {
+        case .basic: BasicMapView()
+        case .markers: MarkersAndTapsView()
+        case .camera: CameraAnimationView()
+        case .swiftUI: SwiftUISampleView()
+        case .uiKit: EmptyView()
+        }
+    }
+}
+
+/// Sample 4: the SwiftUI example. Runs the reference scenario (API_SPEC.md §16), which the
+/// Android Compose example mirrors: three markers, taps, an animation, and every event.
+struct SwiftUISampleView: View {
+    @StateObject private var controller = MapController()
+    @State private var status = "Loading map…"
+    @State private var camera = ""
+    private let style = SampleScenario.style
+
+    var body: some View {
+        MapScreen {
+            RemaplyMap(
+                style: style,
+                controller: controller,
+                options: SampleScenario.options,
+                onMapReady: { controller in
+                    SampleScenario.addMarkersIfNeeded(controller)
+                    status = "Map ready · \(controller.markers.count) markers"
+                },
+                onMapLoadError: { status = "Load error: \($0.code)" },
+                onMapTap: { status = "Map tap: \(SampleScenario.describe($0))" },
+                onMarkerTap: { status = "Marker tap: \($0.id)" },
+                onCameraChange: { camera = SampleScenario.describe($0, reason: $1) },
+                onCameraIdle: { camera = "Idle · \(SampleScenario.describe($0))" }
+            )
+        } panel: {
+            StatusText(text: status)
+            StatusText(text: camera, secondary: true)
+            HStack {
+                SampleButton("Animate") {
+                    SampleScenario.animate(controller) { finished in status = "Animation finished: \(finished)" }
+                }
+                SampleButton("Reset") { SampleScenario.reset(controller) }
+            }
+            .padding(.top, 4)
+        }
+        .navigationTitle("SwiftUI example")
+        .navigationBarTitleDisplayMode(.inline)
+    }
 }

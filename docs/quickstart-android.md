@@ -1,0 +1,152 @@
+# Quick start: Android
+
+Show a map with a marker in a new or existing Android app. Allow about 10 minutes.
+
+**You need:** Android Studio with AGP 9.x, `compileSdk = 37`, `minSdk` 24 or higher, and Kotlin 2.2 or newer.
+You also need a map style URL. Examples here use the free, keyless
+[OpenFreeMap](https://openfreemap.org) "Liberty" style; any MapLibre style works.
+
+## 1. Add the dependency
+
+### Option A: Maven Central (from 0.0.1)
+
+In `settings.gradle.kts`, make sure `mavenCentral()` is in `dependencyResolutionManagement.repositories`. Then, in
+your app module's `build.gradle.kts`:
+
+```kotlin
+dependencies {
+    implementation("io.github.winayaid:remaply-maps-trial-android:0.0.1")
+    // Only if you use Jetpack Compose:
+    implementation("io.github.winayaid:remaply-maps-trial-compose:0.0.1")
+}
+```
+
+If your organization hosts the SDK in a private Maven repository instead, add that repository next to
+`mavenCentral()`; see [Releasing › Private Maven repository](releasing.md#4-private-maven-repository-optional).
+
+### Option B: from source
+
+1. Clone the SDK next to your project:
+
+   ```bash
+   git clone https://github.com/winayaid/remaply-maplibre-sdk.git
+   ```
+
+2. In your project's `settings.gradle.kts`, include the SDK build. Gradle then resolves the coordinates from
+   option A to the source:
+
+   ```kotlin
+   includeBuild("../remaply-maplibre-sdk/android")
+   ```
+
+3. Add the same `dependencies` as in option A, **without the version**:
+
+   ```kotlin
+   implementation("io.github.winayaid:remaply-maps-trial-android")
+   implementation("io.github.winayaid:remaply-maps-trial-compose") // Compose only
+   ```
+
+   Your project must use the same Android Gradle Plugin and Kotlin plugin versions as
+   `remaply-maplibre-sdk/android/gradle/libs.versions.toml`.
+
+No manifest changes are needed: the `INTERNET` permission comes with the SDK. The SDK removes MapLibre's
+location permissions, because v1 doesn't use location.
+
+## 2. Show a map
+
+### Jetpack Compose
+
+```kotlin
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import io.github.winayaid.mapstrial.CameraPosition
+import io.github.winayaid.mapstrial.GeoCoordinate
+import io.github.winayaid.mapstrial.MapOptions
+import io.github.winayaid.mapstrial.MapStyle
+import io.github.winayaid.mapstrial.Marker
+import io.github.winayaid.mapstrial.compose.RemaplyMap
+import io.github.winayaid.mapstrial.compose.rememberMapController
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val paris = GeoCoordinate(48.8566, 2.3522)
+        setContent {
+            val controller = rememberMapController()
+            RemaplyMap(
+                style = MapStyle.url("https://tiles.openfreemap.org/styles/liberty"),
+                modifier = Modifier.fillMaxSize(),
+                controller = controller,
+                options = MapOptions(initialCamera = CameraPosition(paris, zoom = 12.0)),
+                onMapReady = {
+                    // The controller survives rotation; only add the marker once.
+                    if (it.getMarker("paris") == null) it.addMarker(Marker("paris", paris))
+                },
+                onMarkerTap = { marker -> println("Tapped ${marker.id}") },
+            )
+        }
+    }
+}
+```
+
+### Classic Views
+
+Layout `res/layout/activity_main.xml`:
+
+```xml
+<io.github.winayaid.mapstrial.RemaplyMapView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/map"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:remaply_styleUrl="https://tiles.openfreemap.org/styles/liberty" />
+```
+
+Activity (uses AppCompat, which new Android Studio "Views" projects already include):
+
+```kotlin
+import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import io.github.winayaid.mapstrial.GeoCoordinate
+import io.github.winayaid.mapstrial.MapController
+import io.github.winayaid.mapstrial.MapListener
+import io.github.winayaid.mapstrial.Marker
+import io.github.winayaid.mapstrial.RemaplyMapView
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        val map = findViewById<RemaplyMapView>(R.id.map)
+        map.listener = object : MapListener {
+            override fun onMapReady(controller: MapController) {
+                if (controller.getMarker("paris") == null) {
+                    controller.addMarker(Marker("paris", GeoCoordinate(48.8566, 2.3522)))
+                }
+            }
+
+            override fun onMarkerTap(marker: Marker) {
+                Toast.makeText(this@MainActivity, "Tapped ${marker.id}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+}
+```
+
+The view follows the Activity's lifecycle by itself; there's no need to forward `onStart`, `onStop`, and so on.
+Give it an `android:id` so its markers survive rotation.
+
+## 3. Run it
+
+Run the app. You should see Paris with a red pin; tapping the pin calls `onMarkerTap`.
+
+## Next steps
+
+- [Usage guide](guide.md): camera, markers, events, errors, lifecycle, and logging.
+- [Samples](../samples/android): basic map, markers and taps, camera animation, Compose and classic View.
+- [Attribution](attribution.md): what your app must show and include.
+- API reference: build it with `cd android && ./gradlew :dokkaGenerate` (see [API reference](api-reference.md)).

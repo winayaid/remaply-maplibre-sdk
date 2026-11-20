@@ -7,15 +7,16 @@ plugins {
 }
 
 android {
-    namespace = "com.remaply.maps.sample"
+    namespace = "io.github.winayaid.mapstrial.sample"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.remaply.maps.sample"
+        applicationId = "io.github.winayaid.mapstrial.sample"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "0.1.0"
+        versionName = "0.0.1"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
@@ -43,12 +44,31 @@ kotlin {
     }
 }
 
+// The SDK version from ../../android/gradle.properties, so the sample also resolves published artifacts.
+val sdkVersion: String =
+    providers
+        .fileContents(rootProject.layout.projectDirectory.file("../../android/gradle.properties"))
+        .asText
+        .get()
+        .lineSequence()
+        .first { it.startsWith("VERSION_NAME=") }
+        .substringAfter("=")
+
 dependencies {
-    implementation("com.remaply:maps-android")
-    implementation("com.remaply:maps-android-compose")
+    implementation("io.github.winayaid:remaply-maps-trial-android:$sdkVersion")
+    implementation("io.github.winayaid:remaply-maps-trial-compose:$sdkVersion")
     implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.core)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
+
+    // Sample-screen UI tests (Phase 6). Test-only.
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.uiautomator)
+    debugImplementation(libs.compose.ui.test.manifest)
 }
