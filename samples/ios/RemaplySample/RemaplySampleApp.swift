@@ -1,12 +1,6 @@
-import MapLibre
 import RemaplyMaps
 import SwiftUI
 
-/// Phase 1 foundation sample: shows a map with the demo style and nothing else.
-///
-/// This temporarily wraps MapLibre's `MLNMapView` directly (reached through the SDK's
-/// dependency) to prove that the build, the pinned MapLibre version, and rendering all work.
-/// Phase 3 replaces it with the SDK's `RemaplyMap` SwiftUI view.
 @main
 struct RemaplySampleApp: App {
     init() {
@@ -15,26 +9,79 @@ struct RemaplySampleApp: App {
 
     var body: some Scene {
         WindowGroup {
-            FoundationMapView(styleURL: SampleConstants.demoStyleURL)
-                .ignoresSafeArea()
+            SwiftUISampleView()
         }
     }
 }
 
-enum SampleConstants {
-    /// Free, keyless demo style (API_SPEC.md §16). The SDK never hardcodes a style.
-    static let demoStyleURL = "https://tiles.openfreemap.org/styles/liberty"
+/// SwiftUI sample: the reference scenario with `RemaplyMap`.
+struct SwiftUISampleView: View {
+    @StateObject private var controller = MapController()
+    @State private var status = "Loading map…"
+    @State private var camera = ""
+    @State private var showUIKitSample = false
+    private let style = SampleScenario.style
+
+    var body: some View {
+        ZStack(alignment: .top) {
+            RemaplyMap(
+                style: style,
+                controller: controller,
+                options: SampleScenario.options,
+                onMapReady: { controller in
+                    SampleScenario.addMarkersIfNeeded(controller)
+                    status = "Map ready · \(controller.markers.count) markers"
+                },
+                onMapLoadError: { status = "Load error: \($0.code)" },
+                onMapTap: { status = "Map tap: \(SampleScenario.describe($0))" },
+                onMarkerTap: { status = "Marker tap: \($0.id)" },
+                onCameraChange: { camera = SampleScenario.describe($0, reason: $1) },
+                onCameraIdle: { camera = "Idle · \(SampleScenario.describe($0))" }
+            )
+            .ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(status).font(.system(size: 15)).accessibilityIdentifier("status")
+                Text(camera).font(.system(size: 13)).foregroundColor(.secondary).accessibilityIdentifier("camera")
+                HStack {
+                    SampleButton("Animate") {
+                        SampleScenario.animate(controller) { finished in status = "Animation finished: \(finished)" }
+                    }
+                    SampleButton("Reset") { SampleScenario.reset(controller) }
+                    SampleButton("UIKit sample") { showUIKitSample = true }
+                }
+                .padding(.top, 4)
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.white.opacity(0.9))
+            .cornerRadius(8)
+            .padding(12)
+        }
+        .fullScreenCover(isPresented: $showUIKitSample) {
+            UIKitSampleScreen()
+        }
+    }
 }
 
-/// Minimal SwiftUI wrapper around `MLNMapView`. Phase 1 only.
-struct FoundationMapView: UIViewRepresentable {
-    let styleURL: String
+struct SampleButton: View {
+    private let title: String
+    private let action: () -> Void
 
-    func makeUIView(context: Context) -> MLNMapView {
-        let mapView = MLNMapView(frame: .zero, styleURL: URL(string: styleURL))
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        return mapView
+    init(_ title: String, action: @escaping () -> Void) {
+        self.title = title
+        self.action = action
     }
 
-    func updateUIView(_ uiView: MLNMapView, context: Context) {}
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 14))
+                .foregroundColor(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(Color(red: 0, green: 0x79 / 255.0, blue: 0x6B / 255.0))
+                .cornerRadius(6)
+        }
+    }
 }

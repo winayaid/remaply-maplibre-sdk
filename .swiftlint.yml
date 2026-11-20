@@ -27,9 +27,12 @@ opt_in_rules:
   - weak_delegate
 
 line_length:
-  warning: 120
+  warning: 130
   error: 160
   ignores_comments: true
+
+large_tuple:
+  warning: 3
 
 missing_docs:
   # Every public SDK symbol must carry a doc comment (feeds the DocC reference in Phase 6).
@@ -39,4 +42,10 @@ force_unwrapping:
   severity: error
 
 identifier_name:
-  excluded: [id, x, y]
+  # Short names are idiomatic in the camera math (t, dx, lo/hi) and mirror the Kotlin implementation.
+  min_length: 1
+
+type_body_length:
+  # MapSession wraps the whole native map; it is split by concern across files instead.
+  warning: 350
+  error: 450

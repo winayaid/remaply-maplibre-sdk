@@ -15,9 +15,21 @@ final class RemaplyMapsTests: XCTestCase {
     }
 
     @MainActor
-    func testMapLibreLinks() {
-        // Creating the native view proves the MapLibre binary is linked and loadable.
-        let view = NativeMapView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        XCTAssertNotNil(view)
+    func testRemaplyMapViewCreatesAndDestroysCleanly() {
+        // Creating the view proves the MapLibre binary is linked and loadable.
+        weak var weakView: RemaplyMapView?
+        let controller = MapController()
+        autoreleasepool {
+            let view = RemaplyMapView(frame: CGRect(x: 0, y: 0, width: 100, height: 100),
+                                      style: .url("https://example.com/style.json"), controller: controller)
+            weakView = view
+            view.onCreate()
+            XCTAssertEqual(view.lifecycleState, .created)
+            view.onDestroy()
+            XCTAssertEqual(view.lifecycleState, .destroyed)
+        }
+        XCTAssertNil(weakView, "RemaplyMapView leaked after onDestroy")
+        XCTAssertEqual(controller.style, .url("https://example.com/style.json"))
+        XCTAssertFalse(controller.isMapReady)
     }
 }
