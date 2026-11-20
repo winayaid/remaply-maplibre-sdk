@@ -28,7 +28,7 @@ fi
 
 android_maplibre=$(sed -n 's/^maplibre = "\(.*\)"/\1/p' android/gradle/libs.versions.toml)
 android_test=$(sed -n 's/.*assertEquals("\(.*\)", RemaplyMaps.mapLibreVersion).*/\1/p' \
-    android/maps/src/test/kotlin/com/remaply/maps/RemaplyMapsTest.kt)
+    android/maps/src/test/kotlin/io/github/winayaid/mapstrial/RemaplyMapsTest.kt)
 check "Android MapLibre (unit test)" "$android_maplibre" "$android_test"
 android_artifact=$(sed -n 's/^maplibre-android = { module = "\([^"]*\)".*/\1/p' android/gradle/libs.versions.toml)
 grep -q "$android_artifact:$android_maplibre" LICENSE \

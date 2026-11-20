@@ -52,7 +52,7 @@ once they are public: `./gradlew -PremaplyFromMavenLocal=true installDebug` afte
 | 12 | Open **Compose / SwiftUI** and **classic View / UIKit** examples | Same scenario and result on both |
 
 B2: on Android, run the leak test on the device, which compares the SDK with a plain-MapLibre baseline:
-`(cd android && ./gradlew :remaply-maps-trial-android:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.remaply.maps.LeakTest)`.
+`(cd android && ./gradlew :remaply-maps-trial-android:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=io.github.winayaid.mapstrial.LeakTest)`.
 Record both numbers it logs.
 
 B5: follow the [Android](quickstart-android.md) and [iOS](quickstart-ios.md) quick starts in a new app on the

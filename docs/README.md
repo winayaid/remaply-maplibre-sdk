@@ -18,11 +18,11 @@ Both sample apps open a launcher with the same five samples:
 
 | Sample | Android | iOS |
 |---|---|---|
-| Basic map | [`BasicMapScreen.kt`](../samples/android/app/src/main/kotlin/com/remaply/maps/sample/BasicMapScreen.kt) | [`BasicMapView.swift`](../samples/ios/RemaplySample/BasicMapView.swift) |
-| Markers and taps | [`MarkersAndTapsScreen.kt`](../samples/android/app/src/main/kotlin/com/remaply/maps/sample/MarkersAndTapsScreen.kt) | [`MarkersAndTapsView.swift`](../samples/ios/RemaplySample/MarkersAndTapsView.swift) |
-| Camera animation | [`CameraAnimationScreen.kt`](../samples/android/app/src/main/kotlin/com/remaply/maps/sample/CameraAnimationScreen.kt) | [`CameraAnimationView.swift`](../samples/ios/RemaplySample/CameraAnimationView.swift) |
-| Compose / SwiftUI example | [`FullScenarioScreen.kt`](../samples/android/app/src/main/kotlin/com/remaply/maps/sample/FullScenarioScreen.kt) | [`RemaplySampleApp.swift`](../samples/ios/RemaplySample/RemaplySampleApp.swift) |
-| Classic View / UIKit example | [`ViewSampleActivity.kt`](../samples/android/app/src/main/kotlin/com/remaply/maps/sample/ViewSampleActivity.kt) | [`UIKitSampleViewController.swift`](../samples/ios/RemaplySample/UIKitSampleViewController.swift) |
+| Basic map | [`BasicMapScreen.kt`](../samples/android/app/src/main/kotlin/io/github/winayaid/mapstrial/sample/BasicMapScreen.kt) | [`BasicMapView.swift`](../samples/ios/RemaplySample/BasicMapView.swift) |
+| Markers and taps | [`MarkersAndTapsScreen.kt`](../samples/android/app/src/main/kotlin/io/github/winayaid/mapstrial/sample/MarkersAndTapsScreen.kt) | [`MarkersAndTapsView.swift`](../samples/ios/RemaplySample/MarkersAndTapsView.swift) |
+| Camera animation | [`CameraAnimationScreen.kt`](../samples/android/app/src/main/kotlin/io/github/winayaid/mapstrial/sample/CameraAnimationScreen.kt) | [`CameraAnimationView.swift`](../samples/ios/RemaplySample/CameraAnimationView.swift) |
+| Compose / SwiftUI example | [`FullScenarioScreen.kt`](../samples/android/app/src/main/kotlin/io/github/winayaid/mapstrial/sample/FullScenarioScreen.kt) | [`RemaplySampleApp.swift`](../samples/ios/RemaplySample/RemaplySampleApp.swift) |
+| Classic View / UIKit example | [`ViewSampleActivity.kt`](../samples/android/app/src/main/kotlin/io/github/winayaid/mapstrial/sample/ViewSampleActivity.kt) | [`UIKitSampleViewController.swift`](../samples/ios/RemaplySample/UIKitSampleViewController.swift) |
 
 Run them with `cd samples/android && ./gradlew installDebug` and `open samples/ios/RemaplySample.xcodeproj`.
 

@@ -37,11 +37,11 @@ func makeMapError(_ code: MapErrorCode, _ message: String, cause: (any Error)? =
     return error
 }
 
-/// Default logger: `os.Logger`, subsystem `com.remaply.maps`, category = tag.
+/// Default logger: `os.Logger`, subsystem `io.github.winayaid.mapstrial`, category = tag.
 final class OSLogLogger: MapLogger, @unchecked Sendable {
     static let shared = OSLogLogger()
-    private let sdk = Logger(subsystem: "com.remaply.maps", category: SdkLog.tag)
-    private let mapLibre = Logger(subsystem: "com.remaply.maps", category: SdkLog.mapLibreTag)
+    private let sdk = Logger(subsystem: "io.github.winayaid.mapstrial", category: SdkLog.tag)
+    private let mapLibre = Logger(subsystem: "io.github.winayaid.mapstrial", category: SdkLog.mapLibreTag)
 
     func log(level: LogLevel, tag: String, message: String, error: (any Error)?) {
         let logger = tag == SdkLog.mapLibreTag ? mapLibre : sdk

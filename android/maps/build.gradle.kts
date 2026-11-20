@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.remaply.maps"
+    namespace = "io.github.winayaid.mapstrial"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

@@ -30,7 +30,7 @@ public enum RemaplyMaps {
     }
 
     /// Receives SDK and MapLibre log messages. `nil` (the default) writes to `os.Logger`
-    /// (subsystem `com.remaply.maps`). Called from any thread; see ``MapLogger``.
+    /// (subsystem `io.github.winayaid.mapstrial`). Called from any thread; see ``MapLogger``.
     public static var logger: MapLogger? {
         get { state.logger }
         set { state.logger = newValue }

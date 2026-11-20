@@ -19,7 +19,7 @@ OUT_DIR="build/parity"
 mkdir -p "$OUT_DIR"
 ACTUAL="$OUT_DIR/trace-$PLATFORM.txt"
 WAIT_SECONDS="${PARITY_WAIT_SECONDS:-45}"
-APP_ID="com.remaply.maps.sample"
+APP_ID="io.github.winayaid.mapstrial.sample"
 
 case "$PLATFORM" in
 android)

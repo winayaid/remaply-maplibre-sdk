@@ -391,7 +391,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.remaply.maps.sample;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.winayaid.mapstrial.sample;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -408,7 +408,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.remaply.maps.sample;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.winayaid.mapstrial.sample;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -424,7 +424,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.remaply.maps.sample.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.winayaid.mapstrial.sample.uitests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = RemaplySample;
@@ -441,7 +441,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.remaply.maps.sample.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.winayaid.mapstrial.sample.uitests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = RemaplySample;

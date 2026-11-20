@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- The id lets the view retain its controller (and markers) across rotation. -->
-    <com.remaply.maps.RemaplyMapView
+    <io.github.winayaid.mapstrial.RemaplyMapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

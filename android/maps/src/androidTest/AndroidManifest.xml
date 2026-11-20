@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name="com.remaply.maps.TestMapActivity"
+            android:name="io.github.winayaid.mapstrial.TestMapActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Material.Light.NoActionBar" />
     </application>

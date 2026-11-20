@@ -58,14 +58,14 @@ This document defines every public type, method, parameter, callback, default va
 ## 2. Packages and installation coordinates
 
 > Names in this section were proposals (open question Q1). The 0.0.x trial publishes under the Maven Central
-> namespace `io.github.winayaid` with `remaply-maps-trial-*` artifact IDs; the final coordinates are still open.
-> Kotlin packages stay `com.remaply.maps`.
+> namespace `io.github.winayaid` with `remaply-maps-trial-*` artifact IDs and the Kotlin package
+> `io.github.winayaid.mapstrial`, so it never overlaps the final SDK. Final coordinates and package are still open.
 
 | | Android | iOS |
 |---|---|---|
 | Core artifact / product | `io.github.winayaid:remaply-maps-trial-android:0.0.1` | Swift package at the repo root, product `RemaplyMaps` |
 | Compose artifact | `io.github.winayaid:remaply-maps-trial-compose:0.0.1` (depends on the core artifact) | Not needed. SwiftUI support ships in `RemaplyMaps`. |
-| Kotlin package / Swift module | `com.remaply.maps` (Compose: `com.remaply.maps.compose`) | `RemaplyMaps` |
+| Kotlin package / Swift module | `io.github.winayaid.mapstrial` (Compose: `io.github.winayaid.mapstrial.compose`); proposed final: `com.remaply.maps` | `RemaplyMaps` |
 | Repository | Maven Central, with a configurable private repo ([docs/releasing.md](../docs/releasing.md)) | Git tag per version, for example `0.1.0` |
 
 Compose is a separate Android artifact so that apps using only classic Views don't pull in Compose.
@@ -980,7 +980,7 @@ Each question has a recommended answer. Approving the spec as written accepts al
 
 | # | Question | Recommendation |
 |---|---|---|
-| Q1 | Product and package names: `Remaply Maps`, Maven group `com.remaply` (trial: `io.github.winayaid`, see §2), Kotlin package `com.remaply.maps`, Swift module `RemaplyMaps`, view names `RemaplyMapView` / `RemaplyMap`. | Accept, or supply the final names now. Renaming after Phase 2 is expensive. |
+| Q1 | Product and package names: `Remaply Maps`, Maven group `com.remaply` (trial: `io.github.winayaid`, see §2), Kotlin package `com.remaply.maps` (trial: `io.github.winayaid.mapstrial`), Swift module `RemaplyMaps`, view names `RemaplyMapView` / `RemaplyMap`. | Accept, or supply the final names now. Renaming after Phase 2 is expensive. |
 | Q2 | iOS minimum is **15.5** (MapLibre 7.0.0) instead of 15.0. The alternative is MapLibre iOS 6.31.0, which keeps 15.0 but is the previous major. | Use 7.0.0 / iOS 15.5. The Swift API is unchanged from 6.x, and 15.5 covers almost the same devices. |
 | Q3 | Markers are drawn as an SDK-managed GeoJSON source + symbol layer on both platforms, rather than with MapLibre Android's deprecated `Marker` annotations or iOS `MLNPointAnnotation` views. | Accept. It gives identical rendering, z-ordering, and hit-testing on both platforms. |
 | Q4 | The Android-only public members are `RemaplyMapView.onSaveInstanceState(Bundle)`, the `Bundle?` parameter of `onCreate` (iOS `onCreate()` takes none), and the XML attributes. | Accept. They are idiomatic and only needed for manual-lifecycle hosts. |

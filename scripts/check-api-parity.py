@@ -18,8 +18,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-KOTLIN_FILES = sorted((ROOT / "android/maps/src/main/kotlin/com/remaply/maps").glob("*.kt")) + sorted(
-    (ROOT / "android/maps-compose/src/main/kotlin/com/remaply/maps/compose").glob("*.kt"))
+KOTLIN_FILES = sorted((ROOT / "android/maps/src/main/kotlin/io/github/winayaid/mapstrial").glob("*.kt")) + sorted(
+    (ROOT / "android/maps-compose/src/main/kotlin/io/github/winayaid/mapstrial/compose").glob("*.kt"))
 SWIFT_FILES = sorted((ROOT / "ios/Sources/RemaplyMaps").glob("*.swift"))
 
 # Documented differences (API_SPEC.md §3.1, §5.4, §7, §19 Q4).

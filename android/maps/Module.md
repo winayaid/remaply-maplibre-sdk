@@ -7,10 +7,10 @@ tile provider. Jetpack Compose support is in the `remaply-maps-trial-compose` mo
 
 ## Where to start
 
-- [com.remaply.maps.RemaplyMapView]: the map view for classic Views and XML layouts.
-- [com.remaply.maps.MapController]: changes the style, camera, and markers.
-- [com.remaply.maps.MapListener]: receives map-ready, tap, camera, and error events.
-- [com.remaply.maps.RemaplyMaps]: SDK version and logging.
+- [io.github.winayaid.mapstrial.RemaplyMapView]: the map view for classic Views and XML layouts.
+- [io.github.winayaid.mapstrial.MapController]: changes the style, camera, and markers.
+- [io.github.winayaid.mapstrial.MapListener]: receives map-ready, tap, camera, and error events.
+- [io.github.winayaid.mapstrial.RemaplyMaps]: SDK version and logging.
 
 ```kotlin
 val mapView = RemaplyMapView(context, MapStyle.url("https://example.com/style.json"))
@@ -23,6 +23,6 @@ mapView.listener = object : MapListener {
 
 The same API exists on iOS with identical names; see the API specification in the repository.
 
-# Package com.remaply.maps
+# Package io.github.winayaid.mapstrial
 
 The public API of the Remaply Maps SDK: map view, controller, value types, events, errors, and logging.

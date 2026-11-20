@@ -62,13 +62,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import com.remaply.maps.CameraPosition
-import com.remaply.maps.GeoCoordinate
-import com.remaply.maps.MapOptions
-import com.remaply.maps.MapStyle
-import com.remaply.maps.Marker
-import com.remaply.maps.compose.RemaplyMap
-import com.remaply.maps.compose.rememberMapController
+import io.github.winayaid.mapstrial.CameraPosition
+import io.github.winayaid.mapstrial.GeoCoordinate
+import io.github.winayaid.mapstrial.MapOptions
+import io.github.winayaid.mapstrial.MapStyle
+import io.github.winayaid.mapstrial.Marker
+import io.github.winayaid.mapstrial.compose.RemaplyMap
+import io.github.winayaid.mapstrial.compose.rememberMapController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity() {
 Layout `res/layout/activity_main.xml`:
 
 ```xml
-<com.remaply.maps.RemaplyMapView xmlns:android="http://schemas.android.com/apk/res/android"
+<io.github.winayaid.mapstrial.RemaplyMapView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/map"
     android:layout_width="match_parent"
@@ -111,11 +111,11 @@ Activity (uses AppCompat, which new Android Studio "Views" projects already incl
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.remaply.maps.GeoCoordinate
-import com.remaply.maps.MapController
-import com.remaply.maps.MapListener
-import com.remaply.maps.Marker
-import com.remaply.maps.RemaplyMapView
+import io.github.winayaid.mapstrial.GeoCoordinate
+import io.github.winayaid.mapstrial.MapController
+import io.github.winayaid.mapstrial.MapListener
+import io.github.winayaid.mapstrial.Marker
+import io.github.winayaid.mapstrial.RemaplyMapView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

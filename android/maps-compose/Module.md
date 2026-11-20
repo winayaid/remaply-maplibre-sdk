@@ -13,6 +13,6 @@ RemaplyMap(
 )
 ```
 
-# Package com.remaply.maps.compose
+# Package io.github.winayaid.mapstrial.compose
 
 [RemaplyMap] and [rememberMapController].

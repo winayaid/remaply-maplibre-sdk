@@ -88,8 +88,9 @@ These make existing behavior explicit; no public names or signatures changed.
 - §9.4 (Phase 5): Leak checks measure SDK overhead against a plain-MapLibre baseline.
 - §13.1 (Phase 6): The SDK removes MapLibre's location permissions; apps using location declare them.
 - §2 (release): The trial publishes as `io.github.winayaid:remaply-maps-trial-android` and
-  `io.github.winayaid:remaply-maps-trial-compose` instead of the proposed `com.remaply:maps-android*`. Kotlin
-  packages are unchanged.
+  `io.github.winayaid:remaply-maps-trial-compose` instead of the proposed `com.remaply:maps-android*`, with the
+  Kotlin package `io.github.winayaid.mapstrial` (Compose: `.compose`) instead of `com.remaply.maps`, so the trial
+  never overlaps the final SDK. The Swift module is unchanged.
 
 ### Fixed
 
