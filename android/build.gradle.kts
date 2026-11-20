@@ -17,7 +17,7 @@ val privateRepoUrl = providers.gradleProperty("remaplyPrivateRepoUrl")
 val privateRepoUser = providers.gradleProperty("remaplyPrivateUsername")
 
 subprojects {
-    group = "com.remaply"
+    group = "io.github.winayaid"
     version = sdkVersion
 
     plugins.withId("com.vanniktech.maven.publish") {

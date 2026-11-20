@@ -16,7 +16,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "remaply-maps-android"
 
-// Project names match the published artifact IDs (com.remaply:<name>), so the sample app
+// Project names match the published artifact IDs (io.github.winayaid:<name>), so the sample app
 // can consume them through a Gradle composite build by their Maven coordinates.
 include(":maps-android")
 project(":maps-android").projectDir = file("maps")

@@ -8,8 +8,6 @@ You also need a map style URL. Examples here use the free, keyless
 
 ## 1. Add the dependency
 
-> **Pre-release:** 0.1.0 isn't on Maven Central yet. Until it is, use [option B](#option-b-from-source).
-
 ### Option A: Maven Central (from 0.1.0)
 
 In `settings.gradle.kts`, make sure `mavenCentral()` is in `dependencyResolutionManagement.repositories`. Then, in
@@ -17,9 +15,9 @@ your app module's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.remaply:maps-android:0.1.0")
+    implementation("io.github.winayaid:maps-android:0.1.0")
     // Only if you use Jetpack Compose:
-    implementation("com.remaply:maps-android-compose:0.1.0")
+    implementation("io.github.winayaid:maps-android-compose:0.1.0")
 }
 ```
 
@@ -44,8 +42,8 @@ If your organization hosts the SDK in a private Maven repository instead, add th
 3. Add the same `dependencies` as in option A, **without the version**:
 
    ```kotlin
-   implementation("com.remaply:maps-android")
-   implementation("com.remaply:maps-android-compose") // Compose only
+   implementation("io.github.winayaid:maps-android")
+   implementation("io.github.winayaid:maps-android-compose") // Compose only
    ```
 
    Your project must use the same Android Gradle Plugin and Kotlin plugin versions as

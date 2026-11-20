@@ -55,8 +55,8 @@ val sdkVersion: String =
         .substringAfter("=")
 
 dependencies {
-    implementation("com.remaply:maps-android:$sdkVersion")
-    implementation("com.remaply:maps-android-compose:$sdkVersion")
+    implementation("io.github.winayaid:maps-android:$sdkVersion")
+    implementation("io.github.winayaid:maps-android-compose:$sdkVersion")
     implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core)

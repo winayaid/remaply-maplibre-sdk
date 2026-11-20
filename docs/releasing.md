@@ -13,10 +13,9 @@ Central Portal.
 ### 1. Maven Central namespace
 
 1. Create an account at [central.sonatype.com](https://central.sonatype.com).
-2. Register the namespace `com.remaply` (**Namespaces › Add Namespace**) and verify it with the DNS TXT record the
-   portal shows, added to `remaply.com`.
-   If you don't control `remaply.com`, the free alternative is `io.github.winayaid`, verified through GitHub. That
-   changes the Maven group in API_SPEC.md §2, so treat it as a spec change (§17).
+2. Register the namespace `io.github.winayaid` (**Namespaces › Add Namespace**). The portal verifies it by asking
+   you to create a temporary public GitHub repository with the name it shows, under the `winayaid` account.
+   The namespace is the Maven group (API_SPEC.md §2); changing it is a spec change (§17).
 3. Generate a user token (**Account › Generate User Token**). It has a username and a password; you use these, not
    your login.
 
@@ -116,7 +115,7 @@ git push origin 0.1.0
 
 1. In **Actions › Release**, approve the `release` environment. The workflow checks, signs, and uploads.
 2. In the [Central Portal](https://central.sonatype.com/publishing/deployments), open the new deployment for
-   `com.remaply`. Check that it lists both artifacts with `.aar`, `.pom`, `.module`, sources, javadoc, and `.asc`
+   `io.github.winayaid`. Check that it lists both artifacts with `.aar`, `.pom`, `.module`, sources, javadoc, and `.asc`
    files, then press **Publish**. To abandon it instead, press **Drop**; nothing was made public.
 3. Artifacts appear on Maven Central within about 30 minutes (search can take a few hours).
 4. In **Releases**, review the draft the workflow created and publish it. Versions `0.x` and `-` suffixes are marked

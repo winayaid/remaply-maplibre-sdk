@@ -14,7 +14,7 @@ import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 NS = {"m": "http://maven.apache.org/POM/4.0.0"}
-GROUP = "com.remaply"
+GROUP = "io.github.winayaid"
 
 # artifact -> dependencies that must be in compile scope (exposed to apps)
 ARTIFACTS = {

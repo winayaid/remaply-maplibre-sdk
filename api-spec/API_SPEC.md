@@ -57,12 +57,13 @@ This document defines every public type, method, parameter, callback, default va
 
 ## 2. Packages and installation coordinates
 
-> Names in this section are proposals. See open question Q1.
+> Names in this section were proposals (open question Q1). The Maven group is `io.github.winayaid`, the Maven
+> Central namespace verified through GitHub; Kotlin packages stay `com.remaply.maps`.
 
 | | Android | iOS |
 |---|---|---|
-| Core artifact / product | `com.remaply:maps-android:0.1.0` | Swift package at the repo root, product `RemaplyMaps` |
-| Compose artifact | `com.remaply:maps-android-compose:0.1.0` (depends on the core artifact) | Not needed. SwiftUI support ships in `RemaplyMaps`. |
+| Core artifact / product | `io.github.winayaid:maps-android:0.1.0` | Swift package at the repo root, product `RemaplyMaps` |
+| Compose artifact | `io.github.winayaid:maps-android-compose:0.1.0` (depends on the core artifact) | Not needed. SwiftUI support ships in `RemaplyMaps`. |
 | Kotlin package / Swift module | `com.remaply.maps` (Compose: `com.remaply.maps.compose`) | `RemaplyMaps` |
 | Repository | Maven Central, with a configurable private repo ([docs/releasing.md](../docs/releasing.md)) | Git tag per version, for example `0.1.0` |
 
@@ -978,7 +979,7 @@ Each question has a recommended answer. Approving the spec as written accepts al
 
 | # | Question | Recommendation |
 |---|---|---|
-| Q1 | Product and package names: `Remaply Maps`, Maven group `com.remaply`, Kotlin package `com.remaply.maps`, Swift module `RemaplyMaps`, view names `RemaplyMapView` / `RemaplyMap`. | Accept, or supply the final names now. Renaming after Phase 2 is expensive. |
+| Q1 | Product and package names: `Remaply Maps`, Maven group `com.remaply` (**final: `io.github.winayaid`**, see §2), Kotlin package `com.remaply.maps`, Swift module `RemaplyMaps`, view names `RemaplyMapView` / `RemaplyMap`. | Accept, or supply the final names now. Renaming after Phase 2 is expensive. |
 | Q2 | iOS minimum is **15.5** (MapLibre 7.0.0) instead of 15.0. The alternative is MapLibre iOS 6.31.0, which keeps 15.0 but is the previous major. | Use 7.0.0 / iOS 15.5. The Swift API is unchanged from 6.x, and 15.5 covers almost the same devices. |
 | Q3 | Markers are drawn as an SDK-managed GeoJSON source + symbol layer on both platforms, rather than with MapLibre Android's deprecated `Marker` annotations or iOS `MLNPointAnnotation` views. | Accept. It gives identical rendering, z-ordering, and hit-testing on both platforms. |
 | Q4 | The Android-only public members are `RemaplyMapView.onSaveInstanceState(Bundle)`, the `Bundle?` parameter of `onCreate` (iOS `onCreate()` takes none), and the XML attributes. | Accept. They are idiomatic and only needed for manual-lifecycle hosts. |

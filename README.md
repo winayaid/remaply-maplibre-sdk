@@ -3,8 +3,8 @@
 Native SDKs for showing a [MapLibre](https://maplibre.org) map in Android and iOS apps with a few
 lines of code. Both platforms share the same API names, parameters, events, and behavior.
 
-> **Status:** pre-release. 0.1.0, the first beta, is feature-complete, tested, and ready to publish
-> ([releasing](docs/releasing.md), [beta testing](docs/beta-testing.md)). See the [CHANGELOG](CHANGELOG.md).
+> **Status:** beta. 0.1.0 is the first release; see the [CHANGELOG](CHANGELOG.md) and
+> [beta testing](docs/beta-testing.md).
 
 **Get started:** [Android quick start](docs/quickstart-android.md) · [iOS quick start](docs/quickstart-ios.md) ·
 [Usage guide](docs/guide.md) · [All docs](docs/README.md)
