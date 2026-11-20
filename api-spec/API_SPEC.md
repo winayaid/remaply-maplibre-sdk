@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Spec version | 0.1.0 (draft, Phase 0) |
-| Status | **Awaiting review.** No implementation may start until this document is approved. |
+| Status | **Approved** (Phase 0). Clarified in Phase 2; see `CHANGELOG.md`. |
 | Applies to | Android SDK (Kotlin) and iOS SDK (Swift) |
 | Change control | Any change to this file after approval requires a matching `CHANGELOG.md` entry (see §17). |
 
@@ -43,7 +43,8 @@ This document defines every public type, method, parameter, callback, default va
 | Pinned version | **13.7.1** (released 2026-10-15) | **7.0.0** (released 2026-10-28) |
 | Dependency | `org.maplibre.gl:android-sdk:13.7.1` (OpenGL ES renderer) | SPM `https://github.com/maplibre/maplibre-gl-native-distribution`, exact version `7.0.0`, product `MapLibre` |
 | Minimum OS | **API 24** (Android 7.0). MapLibre requires API 23, so the requested minimum stands. | **iOS 15.5**. ⚠️ Raised from the requested iOS 15.0 because MapLibre iOS 7.0.0 requires 15.5. |
-| Language | Kotlin 2.x (MapLibre 13.7.1 is built with Kotlin 2.3) | Swift 5.9+ (Xcode 16 or newer) |
+| Language | Kotlin 2.2+ (the SDK emits Kotlin 2.2 metadata; MapLibre 13.7.1 is built with Kotlin 2.3) | Swift 5.9+ (Xcode 16 or newer) |
+| Compile SDK | **37**. Current AndroidX releases (core, Compose, Lifecycle) require apps to compile against API 37. This does not change the minimum OS. | n/a |
 | UI toolkits | Jetpack Compose, classic `View` | SwiftUI, UIKit |
 
 **Pinning rules**
@@ -482,6 +483,7 @@ public final class MapController: ObservableObject {
 ### 6.4 `animateCamera(update, durationMs, completion)` — API-017
 
 - Animates from the current camera to the target with an **ease-in-out** curve (cubic-bezier 0.42, 0, 0.58, 1). The center moves along a straight line on screen; there is no fly-out arc.
+- **Shared algorithm.** Both SDKs drive the animation themselves, one camera step per display frame, rather than using MapLibre's built-in animation. The center is interpolated linearly in Web Mercator space, taking the shorter way across the antimeridian. Zoom and tilt are interpolated linearly. The bearing takes the shorter arc.
 - Throws `INVALID_ARGUMENT` per §5.3, or if `durationMs < 0`.
 - `durationMs = 0` behaves like `setCamera`, then calls `completion(true)`.
 - Fires `onCameraChange(…, PROGRAMMATIC)` at most once per frame, then `onCameraIdle`.
@@ -504,6 +506,7 @@ public final class MapController: ObservableObject {
 | `removeMarker(id)` (API-021) | Removes the marker and returns `true` | Unknown `id` returns `false` and is not an error |
 | `removeAllMarkers()` (API-022) | Removes all markers | none |
 
+- **Validation order** (identical on both platforms): empty `id` → invalid coordinate → duplicate / not found. For example, `addMarker` with an existing id *and* an invalid coordinate throws `INVALID_ARGUMENT`.
 - Marker changes appear on the next rendered frame.
 - Marker methods never fire camera events.
 - There is no hard limit on marker count. v1 is performance-tested up to 1,000 markers.
@@ -678,7 +681,7 @@ How the listener is referenced differs by platform:
 | API-041 | `onMapReady` | The first style has loaded on this view, stored markers are rendered, and the stored camera is applied. Fires **once per view instance**, so it fires again on a new view after rotation. | The bound controller |
 | API-042 | `onMapLoadError` | A style request failed: an invalid style, a missing bundled file, a network or HTTP error, or style JSON that doesn't parse. Also fires if the renderer fails to start. If the *first* style fails, `onMapReady` doesn't fire until a later `setStyle` succeeds. Failures of individual tiles, sprites, or glyphs are **not** reported here; they are logged at `WARN`. | `MapError` with code `INVALID_ARGUMENT`, `STYLE_NOT_FOUND`, `STYLE_LOAD_FAILED`, or `RENDERER_INIT_FAILED` |
 | API-043 | `onStyleLoaded` | Every successful style load, including the first, after markers are re-added | The style that loaded |
-| API-044 | `onMapTap` | A confirmed single tap (not part of a double-tap) that doesn't hit a marker | Coordinate under the tap |
+| API-044 | `onMapTap` | A confirmed single tap (not part of a double-tap) that doesn't hit a marker. Taps before `onMapReady` are ignored (this applies to `onMarkerTap` too). | Coordinate under the tap |
 | API-045 | `onMarkerTap` | A confirmed single tap whose 8 dp/pt hit radius overlaps a rendered marker icon. If several markers overlap, only the topmost one (§5.6) is reported. The tap is consumed, so `onMapTap` does not fire. | The marker, as currently stored |
 | API-046 | `onCameraChange` | The camera changed, at most once per rendered frame. Doesn't fire for the initial camera on first load. | Current camera and reason |
 | API-047 | `onCameraIdle` | The camera stopped moving after one or more `onCameraChange` events | Final camera |
@@ -687,7 +690,7 @@ How the listener is referenced differs by platform:
 
 1. First load: `onStyleLoaded` → `onMapReady`. No camera events fire for the initial camera.
 2. Every camera movement is `onCameraChange` (one or more), then exactly one `onCameraIdle`. A movement that starts before the previous idle continues the same sequence.
-3. For an animation: … `onCameraChange` → `onCameraIdle` → `completion(true)`.
+3. For an animation: … `onCameraChange` → `onCameraIdle` → `completion(true)`. For a cancelled animation: … `onCameraChange` → `onCameraIdle` → `completion(false)`, and then the events of whatever cancelled it. A cancelled animation always closes its movement with an idle (if the camera moved).
 4. No event fires after `onDestroy` returns, or after the view is unbound.
 5. Callbacks are never called again while one is still running (no re-entrancy). Calls the app makes to the controller from inside a callback are allowed. Events they cause are delivered after the current callback returns.
 

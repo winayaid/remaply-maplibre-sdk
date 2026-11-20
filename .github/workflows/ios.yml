@@ -27,8 +27,14 @@ jobs:
           swift --version
 
       - name: Install tools
+        env:
+          # Pinned: the committed sample project must match what this exact version generates.
+          XCODEGEN_VERSION: "2.47.0"
         run: |
-          brew install xcodegen
+          curl -sSfL -o "$RUNNER_TEMP/xcodegen.zip" \
+            "https://github.com/yonaskolb/XcodeGen/releases/download/${XCODEGEN_VERSION}/xcodegen.zip"
+          unzip -q "$RUNNER_TEMP/xcodegen.zip" -d "$RUNNER_TEMP/xcodegen"
+          echo "$RUNNER_TEMP/xcodegen/xcodegen/bin" >> "$GITHUB_PATH"
           command -v swiftlint >/dev/null || brew install swiftlint
 
       - name: SwiftLint
@@ -37,6 +43,7 @@ jobs:
       - name: Pick and boot simulator
         id: sim
         run: |
+          mkdir -p build
           DEST=$(scripts/ios-sim-destination.sh)
           echo "destination=$DEST" >> "$GITHUB_OUTPUT"
           UDID="${DEST##*id=}"
@@ -61,11 +68,12 @@ jobs:
       - name: Sample project is up to date with project.yml
         working-directory: samples/ios
         run: |
+          xcodegen --version
           xcodegen
           if [ -n "$(git status --porcelain -- .)" ]; then
             echo "::error::samples/ios/RemaplySample.xcodeproj is out of date. Run 'cd samples/ios && xcodegen' and commit."
             git status --porcelain -- .
-            git diff --stat -- .
+            git diff -- .
             exit 1
           fi
 

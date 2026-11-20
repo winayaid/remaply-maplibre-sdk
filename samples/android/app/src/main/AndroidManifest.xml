@@ -12,6 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
+        <!-- Jetpack Compose sample (launcher). -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -20,6 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Classic View sample, opened from the Compose sample. -->
+        <activity
+            android:name=".ViewSampleActivity"
+            android:exported="false"
+            android:label="@string/view_sample_title" />
     </application>
 
 </manifest>

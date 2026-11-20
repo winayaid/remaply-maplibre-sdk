@@ -1,74 +1,121 @@
 package com.remaply.maps.sample
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
-import com.remaply.maps.RemaplyMaps
-import org.maplibre.android.MapLibre
-import org.maplibre.android.maps.MapView
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.remaply.maps.MapStyle
+import com.remaply.maps.compose.RemaplyMap
+import com.remaply.maps.compose.rememberMapController
 
-/**
- * Phase 1 foundation sample: shows a map with the demo style and nothing else.
- *
- * This temporarily drives MapLibre's `MapView` directly (reached through the SDK's `api`
- * dependency) to prove that the build, the pinned MapLibre version, and rendering all work.
- * Phase 2 replaces it with the SDK's `RemaplyMapView`, which handles the lifecycle forwarding
- * below on its own.
- */
+/** Jetpack Compose sample: the reference scenario with `RemaplyMap`. */
 class MainActivity : ComponentActivity() {
-    private lateinit var mapView: MapView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i(TAG, "Remaply Maps ${RemaplyMaps.version} (MapLibre ${RemaplyMaps.mapLibreVersion})")
-
-        MapLibre.getInstance(this)
-        mapView = MapView(this)
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync { map -> map.setStyle(DEMO_STYLE_URL) }
-        setContentView(mapView)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        mapView.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mapView.onResume()
-    }
-
-    override fun onPause() {
-        mapView.onPause()
-        super.onPause()
-    }
-
-    override fun onStop() {
-        mapView.onStop()
-        super.onStop()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        mapView.onDestroy()
-        super.onDestroy()
+        // Manual-testing hook: `adb shell am start -n com.remaply.maps.sample/.MainActivity --es styleUrl <url>`
+        // (or `--es styleAsset <path>`) loads a different style, for example to check error reporting.
+        val style =
+            intent.getStringExtra(EXTRA_STYLE_URL)?.let(MapStyle::url)
+                ?: intent.getStringExtra(EXTRA_STYLE_ASSET)?.let(MapStyle::bundled)
+                ?: SampleScenario.style
+        setContent {
+            ComposeSample(style, onOpenViewSample = { startActivity(Intent(this, ViewSampleActivity::class.java)) })
+        }
     }
 
     private companion object {
-        const val TAG = "RemaplySample"
-
-        /** Free, keyless demo style (API_SPEC.md §16). The SDK never hardcodes a style. */
-        const val DEMO_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty"
+        const val EXTRA_STYLE_URL = "styleUrl"
+        const val EXTRA_STYLE_ASSET = "styleAsset"
     }
+}
+
+@Composable
+private fun ComposeSample(
+    style: MapStyle,
+    onOpenViewSample: () -> Unit,
+) {
+    val controller = rememberMapController()
+    val loading = stringResource(R.string.status_loading)
+    var status by rememberSaveable { mutableStateOf(loading) }
+    var camera by rememberSaveable { mutableStateOf("") }
+
+    Box(Modifier.fillMaxSize()) {
+        RemaplyMap(
+            style = style,
+            modifier = Modifier.fillMaxSize(),
+            controller = controller,
+            options = SampleScenario.options,
+            onMapReady = {
+                SampleScenario.addMarkersIfNeeded(it)
+                status = "Map ready · ${it.markers.size} markers"
+            },
+            onMapLoadError = { status = "Load error: ${it.code}" },
+            onMapTap = { status = "Map tap: ${SampleScenario.describe(it)}" },
+            onMarkerTap = { status = "Marker tap: ${it.id}" },
+            onCameraChange = { c, reason -> camera = SampleScenario.describe(c, reason) },
+            onCameraIdle = { camera = "Idle · ${SampleScenario.describe(it)}" },
+        )
+        Column(
+            Modifier
+                .align(Alignment.TopCenter)
+                .safeDrawingPadding()
+                .padding(12.dp)
+                .fillMaxWidth()
+                .background(Color(0xE6FFFFFF), RoundedCornerShape(8.dp))
+                .padding(12.dp),
+        ) {
+            BasicText(status, style = TextStyle(fontSize = 15.sp, color = Color(0xFF202124)))
+            BasicText(camera, style = TextStyle(fontSize = 13.sp, color = Color(0xFF5F6368)))
+            Spacer(Modifier.width(8.dp))
+            Row(Modifier.padding(top = 8.dp)) {
+                SampleButton(stringResource(R.string.action_animate)) {
+                    SampleScenario.animate(controller) { finished -> status = "Animation finished: $finished" }
+                }
+                SampleButton(stringResource(R.string.action_reset)) { SampleScenario.reset(controller) }
+                SampleButton(stringResource(R.string.action_open_view_sample), onOpenViewSample)
+            }
+        }
+    }
+}
+
+@Composable
+private fun SampleButton(
+    label: String,
+    onClick: () -> Unit,
+) {
+    BasicText(
+        label,
+        style = TextStyle(fontSize = 14.sp, color = Color.White),
+        modifier =
+            Modifier
+                .padding(end = 8.dp)
+                .background(Color(0xFF00796B), RoundedCornerShape(6.dp))
+                .clickable(onClick = onClick)
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+    )
 }

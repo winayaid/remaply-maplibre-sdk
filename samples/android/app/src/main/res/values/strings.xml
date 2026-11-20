@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Remaply Maps Sample</string>
+    <string name="view_sample_title">Classic View sample</string>
+    <string name="action_animate">Animate</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_open_view_sample">View sample</string>
+    <string name="status_loading">Loading map…</string>
+    <plurals name="status_ready">
+        <item quantity="one">Map ready · %1$d marker</item>
+        <item quantity="other">Map ready · %1$d markers</item>
+    </plurals>
+    <string name="status_error">Load error: %1$s</string>
+    <string name="status_map_tap">Map tap: %1$s</string>
+    <string name="status_marker_tap">Marker tap: %1$s</string>
+    <string name="status_animation">Animation finished: %1$s</string>
 </resources>
