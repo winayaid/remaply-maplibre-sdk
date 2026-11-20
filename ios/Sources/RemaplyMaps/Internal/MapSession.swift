@@ -152,7 +152,7 @@ final class MapSession: NSObject, MapBinding, LifecycleTarget, MLNMapViewDelegat
         cancelAnimation()
         unbound = true
         gate.disable()
-        if let style = mapView?.style, styleState == .loaded {
+        if let style = mapView?.style {
             markerLayer.sync([], in: style)
         }
     }
@@ -343,7 +343,10 @@ final class MapSession: NSObject, MapBinding, LifecycleTarget, MLNMapViewDelegat
     }
 
     private func syncMarkers() {
-        guard let style = mapView?.style, styleState == .loaded else { return }
+        // Render into whichever style is on screen. A style request rejected before reaching MapLibre
+        // (invalidArgument, styleNotFound) leaves the previous style and its marker layer in place;
+        // while a new style loads, the layer is reset and sync is a no-op until it is re-installed.
+        guard let style = mapView?.style else { return }
         markerLayer.sync(controller.markersInDrawOrder(), in: style)
     }
 

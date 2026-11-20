@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Spec version | 0.1.0 (draft, Phase 0) |
-| Status | **Approved** (Phase 0). Clarified in Phase 2; see `CHANGELOG.md`. |
+| Status | **Approved** (Phase 0). Clarified in Phases 2–4; see `CHANGELOG.md`. Parity verified: `docs/parity-checklist.md`. |
 | Applies to | Android SDK (Kotlin) and iOS SDK (Swift) |
 | Change control | Any change to this file after approval requires a matching `CHANGELOG.md` entry (see §17). |
 
@@ -686,6 +686,10 @@ How the listener is referenced differs by platform:
 | API-046 | `onCameraChange` | The camera changed, at most once per rendered frame. Doesn't fire for the initial camera on first load. | Current camera and reason |
 | API-047 | `onCameraIdle` | The camera stopped moving after one or more `onCameraChange` events | Final camera |
 
+**What the map shows after a style error.** `INVALID_ARGUMENT` and `STYLE_NOT_FOUND` are detected before MapLibre is asked to load anything, so the previous style (if any) stays on screen with its markers, and marker changes keep rendering. `STYLE_LOAD_FAILED` means MapLibre already dropped the previous style, so the map shows no style until a later `setStyle` succeeds. Markers reappear with that style.
+
+**Gesture physics** (for example, how far a fling coasts) follow each platform's MapLibre and are not part of the contract. The events are: `onCameraChange(…, USER_GESTURE)` while the map moves, then exactly one `onCameraIdle` when it stops.
+
 ### 8.3 Ordering guarantees
 
 1. First load: `onStyleLoaded` → `onMapReady`. No camera events fire for the initial camera.
@@ -814,6 +818,7 @@ public protocol MapLogger: AnyObject, Sendable {
 - The default logger (when `RemaplyMaps.logger` is null) writes to Logcat on Android and to `os.Logger` (subsystem `com.remaply.maps`) on iOS.
 - **The logger may be called from any thread**, because MapLibre logs from worker threads. Implementations must be thread-safe.
 - The logger is held strongly and globally. Don't capture an Activity or view controller in it.
+- MapLibre iOS release binaries have no debug/verbose levels, so MapLibre's own messages at those levels exist only on Android. The SDK's own messages are identical on both platforms.
 - This logger is the **error-reporting hook** required by Phase 4. Apps forward `WARN`/`ERROR` entries to their crash or analytics tool from here.
 
 ---

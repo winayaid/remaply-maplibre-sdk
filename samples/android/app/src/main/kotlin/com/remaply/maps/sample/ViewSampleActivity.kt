@@ -10,6 +10,7 @@ import com.remaply.maps.GeoCoordinate
 import com.remaply.maps.MapController
 import com.remaply.maps.MapError
 import com.remaply.maps.MapListener
+import com.remaply.maps.MapStyle
 import com.remaply.maps.Marker
 import com.remaply.maps.RemaplyMapView
 
@@ -25,16 +26,26 @@ class ViewSampleActivity : ComponentActivity() {
         val map = findViewById<RemaplyMapView>(R.id.map)
         val status = findViewById<TextView>(R.id.status)
         map.options = SampleScenario.options
+        val parity = if (intent.getBooleanExtra(EXTRA_PARITY, false)) ParityScript(map) else null
 
         map.listener =
             object : MapListener {
+                override fun onStyleLoaded(style: MapStyle) {
+                    parity?.onStyleLoaded(style)
+                }
+
                 override fun onMapReady(controller: MapController) {
+                    if (parity != null) {
+                        parity.onMapReady()
+                        return
+                    }
                     SampleScenario.addMarkersIfNeeded(controller)
                     val count = controller.markers.size
                     status.text = resources.getQuantityString(R.plurals.status_ready, count, count)
                 }
 
                 override fun onMapLoadError(error: MapError) {
+                    parity?.onMapLoadError(error)
                     status.text = getString(R.string.status_error, error.code.name)
                 }
 
@@ -49,9 +60,12 @@ class ViewSampleActivity : ComponentActivity() {
                 override fun onCameraChange(
                     camera: CameraPosition,
                     reason: CameraChangeReason,
-                ) = Unit
+                ) {
+                    parity?.onCameraChange(camera, reason)
+                }
 
                 override fun onCameraIdle(camera: CameraPosition) {
+                    parity?.onCameraIdle(camera)
                     status.text = SampleScenario.describe(camera)
                 }
             }
@@ -62,5 +76,10 @@ class ViewSampleActivity : ComponentActivity() {
             }
         }
         findViewById<Button>(R.id.reset).setOnClickListener { SampleScenario.reset(map.controller) }
+    }
+
+    companion object {
+        /** Boolean extra: run [ParityScript] instead of the interactive scenario. */
+        const val EXTRA_PARITY = "parity"
     }
 }

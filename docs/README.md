@@ -9,4 +9,8 @@ Guides and references are added in Phase 6. Planned contents:
 - Attribution and licensing guide
 - MapLibre upgrade migration-note template
 
-Until then, the authoritative reference is [`../api-spec/API_SPEC.md`](../api-spec/API_SPEC.md).
+Available now:
+
+- [Parity checklist](parity-checklist.md): every API item verified on Android and iOS, with how to re-run the checks.
+
+Until the guides exist, the authoritative reference is [`../api-spec/API_SPEC.md`](../api-spec/API_SPEC.md).

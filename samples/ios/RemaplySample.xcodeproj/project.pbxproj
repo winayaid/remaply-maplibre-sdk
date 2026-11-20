@@ -11,10 +11,12 @@
 		34A3A1603CC5D29057208FEA /* UIKitSampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */; };
 		6EE4C553912EBAA9E2FB793A /* styles in Resources */ = {isa = PBXBuildFile; fileRef = EF18404DBAC0CE5E539975D1 /* styles */; };
 		7D2E5596303325EBC4D14BF2 /* SampleScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A8352372755B5779D95C0 /* SampleScenario.swift */; };
+		94E88FE053255EFE209F508F /* ParityScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401CABDDF29E8025C096EEF9 /* ParityScript.swift */; };
 		DD15BD8E8921D54AB0962540 /* RemaplySampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8A3AD01AA1CBF448F1F201 /* RemaplySampleApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		401CABDDF29E8025C096EEF9 /* ParityScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParityScript.swift; sourceTree = "<group>"; };
 		68173BA8C85CD403FC0FB741 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		68BD5BB4AFD6428E06BE4D8C /* remaply-maplibre-sdk */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "remaply-maplibre-sdk"; path = ../..; sourceTree = SOURCE_ROOT; };
 		8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitSampleViewController.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				68173BA8C85CD403FC0FB741 /* Info.plist */,
+				401CABDDF29E8025C096EEF9 /* ParityScript.swift */,
 				FA8A3AD01AA1CBF448F1F201 /* RemaplySampleApp.swift */,
 				B54A8352372755B5779D95C0 /* SampleScenario.swift */,
 				8441F382ECD9EE0BFB396D2D /* UIKitSampleViewController.swift */,
@@ -157,6 +160,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94E88FE053255EFE209F508F /* ParityScript.swift in Sources */,
 				DD15BD8E8921D54AB0962540 /* RemaplySampleApp.swift in Sources */,
 				7D2E5596303325EBC4D14BF2 /* SampleScenario.swift in Sources */,
 				34A3A1603CC5D29057208FEA /* UIKitSampleViewController.swift in Sources */,

@@ -1,0 +1,61 @@
+load|styleLoaded url:https://tiles.openfreemap.org/styles/liberty markers=0
+load|mapReady isMapReady=true
+markers|begin
+markers|markers a,b,c
+frame|begin
+frame|change z=11.00 b=0.0 t=0.0 lat=48.8566 lng=2.3522 PROGRAMMATIC
+frame|idle z=11.00 b=0.0 t=0.0 lat=48.8566 lng=2.3522
+rendered|begin
+rendered|rendered a,b,c
+errors|begin
+errors|addMarker(dup) error DUPLICATE_MARKER_ID
+errors|addMarker(emptyId) error INVALID_ARGUMENT
+errors|addMarker(badCoord) error INVALID_ARGUMENT
+errors|updateMarker(unknown) error MARKER_NOT_FOUND
+errors|removeMarker(unknown)=false
+errors|setCamera(badCenter) error INVALID_ARGUMENT
+errors|setCamera(nanZoom) error INVALID_ARGUMENT
+errors|animateCamera(negative) error INVALID_ARGUMENT
+jump|begin
+jump|change z=14.00 b=0.0 t=0.0 lat=48.8566 lng=2.3522 PROGRAMMATIC
+jump|idle z=14.00 b=0.0 t=0.0 lat=48.8566 lng=2.3522
+jumpSame|begin
+jumpClamped|begin
+jumpClamped|change z=22.00 b=270.0 t=60.0 lat=48.8566 lng=2.3522 PROGRAMMATIC
+jumpClamped|idle z=22.00 b=270.0 t=60.0 lat=48.8566 lng=2.3522
+optionsClamp|begin
+optionsClamp|change z=13.00 b=270.0 t=60.0 lat=48.8566 lng=2.3522 PROGRAMMATIC
+optionsClamp|idle z=13.00 b=270.0 t=60.0 lat=48.8566 lng=2.3522
+optionsRestore|begin
+animate|begin
+animate|change+ z=12.00 b=90.0 t=30.0 lat=48.8566 lng=2.3522 PROGRAMMATIC
+animate|idle z=12.00 b=90.0 t=30.0 lat=48.8566 lng=2.3522
+animate|completion true
+cancel|begin
+cancel|change+ (timing-dependent) PROGRAMMATIC
+cancel|idle (timing-dependent)
+cancel|completion false
+cancel|change z=10.00 b=90.0 t=30.0 lat=48.8566 lng=2.3522 PROGRAMMATIC
+cancel|idle z=10.00 b=90.0 t=30.0 lat=48.8566 lng=2.3522
+emptyAnimate|begin
+emptyAnimate|completion true
+styleErrors|begin
+styleErrors|loadError STYLE_NOT_FOUND
+styleErrors|loadError INVALID_ARGUMENT
+markerAfterStyleError|begin
+markerAfterStyleError|change z=11.00 b=0.0 t=0.0 lat=48.8566 lng=2.3522 PROGRAMMATIC
+markerAfterStyleError|idle z=11.00 b=0.0 t=0.0 lat=48.8566 lng=2.3522
+renderedAfterStyleError|begin
+renderedAfterStyleError|rendered a,b,c,d
+styleReload|begin
+styleReload|styleLoaded bundled:styles/demo-bundled.json markers=4
+renderedAfterReload|begin
+renderedAfterReload|rendered a,b,c,d
+styleSame|begin
+markerEdit|begin
+markerEdit|getMarker(a).zIndex=5 markers=4
+markerEdit|markers=0
+state|begin
+state|isMapReady=true style=bundled:styles/demo-bundled.json
+state|camera z=11.00 b=0.0 t=0.0 lat=48.8566 lng=2.3522
+state|done
