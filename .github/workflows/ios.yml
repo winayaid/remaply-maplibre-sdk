@@ -89,6 +89,10 @@ jobs:
             | tee build/sample-test.log | grep -E "Test Case|Executed|error:|\*\* TEST" || true
           grep -q "\*\* TEST SUCCEEDED \*\*" build/sample-test.log
 
+      # SPM resolves the package from a version tag (docs/releasing.md); the quick start code must compile.
+      - name: Package consumable from a version tag
+        run: scripts/check-spm-consumer.sh
+
       - name: Upload results
         if: failure()
         uses: actions/upload-artifact@v7

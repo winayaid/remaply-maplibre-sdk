@@ -38,6 +38,16 @@ jobs:
       - name: Assemble release AARs
         run: ./gradlew assembleRelease --console=plain
 
+      # What a release would upload (docs/releasing.md), minus signing: POMs, AARs, sources, javadoc.
+      - name: Publish dry run (Maven Local)
+        run: |
+          ./gradlew publishToMavenLocal --console=plain
+          python3 ../scripts/check-publication.py
+
+      - name: Sample builds against the published artifacts
+        working-directory: samples/android
+        run: ./gradlew -PremaplyFromMavenLocal=true assembleDebug --console=plain
+
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v7

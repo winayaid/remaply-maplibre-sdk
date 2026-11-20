@@ -111,6 +111,8 @@ Instrumented and integration tests serve map styles from an in-process HTTP stub
 
 ## 4. Open issues
 
+The 0.1.x beta covers issues 1, 2, 4, and 5; see [beta-testing.md](beta-testing.md).
+
 1. **iOS 15.5–18 not tested.** Only the iOS 26.1 simulator runtime is installed locally, and the CI image uses iOS 26.x. Older runtimes need a separate download, and current Xcode may not support simulators that old. Recommendation: test on a physical device running iOS 15.5–17 during the 0.1.0 beta (Phase 7).
 2. **MapLibre native retention on the Android emulator.** Plain MapLibre retains about 4.8 MB of native memory per map instance on the emulator. The SDK adds nothing on top, but an app that creates many maps would see this growth. Recommendation: repeat on a physical device. If it reproduces, report it upstream to MapLibre with the baseline test as the reproduction.
 3. **Pending CI results.** The Android API 24 and API 36 emulator jobs run for the first time when this branch is pushed. API 24 uses a software GPU in CI; if MapLibre can't render there, the job will show `RENDERER_INIT_FAILED` or timeouts, and the matrix will need adjusting.

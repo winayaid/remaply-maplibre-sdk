@@ -6,9 +6,18 @@ pluginManagement {
     }
 }
 
+// -PremaplyFromMavenLocal=true builds against the artifacts from `./gradlew publishToMavenLocal` in
+// ../../android instead of the SDK sources. CI uses it to check the published POMs and AARs.
+val fromMavenLocal = providers.gradleProperty("remaplyFromMavenLocal").orNull == "true"
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        if (fromMavenLocal) {
+            mavenLocal {
+                content { includeGroup("com.remaply") }
+            }
+        }
         google()
         mavenCentral()
     }
@@ -25,6 +34,8 @@ rootProject.name = "remaply-maps-sample"
 // Composite build: `com.remaply:maps-android` and `com.remaply:maps-android-compose` resolve to the
 // local SDK sources in ../../android instead of a published artifact. Apps outside this repo use
 // the Maven coordinates documented in docs/.
-includeBuild("../../android")
+if (!fromMavenLocal) {
+    includeBuild("../../android")
+}
 
 include(":app")

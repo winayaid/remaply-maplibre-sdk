@@ -54,6 +54,17 @@ Targeting **0.1.0** (first beta).
   - Samples restructured into a launcher with five screens on both platforms: basic map, markers and taps,
     camera animation, Compose/SwiftUI example, classic View/UIKit example. UI tests open every screen.
   - CI: `docs.yml` (link check, Dokka, DocC) and the sample-screen tests.
+- **Release tooling (Phase 7):** see `docs/releasing.md` and `docs/beta-testing.md`.
+  - Android publishing with full POM metadata, sources, and Dokka javadoc: Maven Central (Central Portal,
+    released by hand after review), and an optional private Maven repo set by `remaplyPrivateRepoUrl`.
+    Signing is enabled when `signingInMemoryKey` is provided.
+  - `release.yml`: on a version tag, checks the tag, versions, and changelog; signs and uploads the Android
+    artifacts after approval of the `release` environment; checks that the iOS package resolves from the tag;
+    and drafts a GitHub release.
+  - Every pull request now publishes to Maven Local, checks the artifacts (`scripts/check-publication.py`),
+    builds the Android sample against them, and builds an SPM consumer of a locally tagged copy
+    (`scripts/check-spm-consumer.sh`) that compiles the iOS quick start code.
+  - Beta test plan for 0.1.x: device matrix and per-device checklist covering the test report's open issues.
 - Android: the SDK removes MapLibre's `ACCESS_FINE_LOCATION` and `ACCESS_COARSE_LOCATION` permissions from apps,
   because v1 doesn't use location.
 
