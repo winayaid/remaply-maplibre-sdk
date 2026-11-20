@@ -32,7 +32,7 @@ This SDK wraps MapLibre Native, which is distributed under its own license.
 The SDK does not modify or redistribute MapLibre source code; MapLibre binaries
 are resolved by your build tool from their official distribution channels:
 
-  - Android: org.maplibre.gl:android-sdk:13.7.1 (Maven Central)
+  - Android: org.maplibre.gl:android-sdk-opengl:13.7.1 (Maven Central)
   - iOS:     https://github.com/maplibre/maplibre-gl-native-distribution 7.0.0
 
 MapLibre Native also bundles third-party components, each under its own

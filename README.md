@@ -8,7 +8,7 @@ lines of code. Both platforms share the same API names, parameters, events, and 
 
 | | Android | iOS |
 |---|---|---|
-| Wraps | MapLibre Native Android **13.7.1** | MapLibre Native iOS **7.0.0** |
+| Wraps | MapLibre Native Android **13.7.1** (OpenGL ES) | MapLibre Native iOS **7.0.0** |
 | Minimum OS | API 24 (Android 7.0) | iOS 15.5 |
 | UI toolkits | Jetpack Compose, classic View | SwiftUI, UIKit |
 | Language | Kotlin 2.2+ | Swift 5.9+ (Xcode 16+) |

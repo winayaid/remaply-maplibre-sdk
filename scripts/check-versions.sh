@@ -30,8 +30,9 @@ android_maplibre=$(sed -n 's/^maplibre = "\(.*\)"/\1/p' android/gradle/libs.vers
 android_test=$(sed -n 's/.*assertEquals("\(.*\)", RemaplyMaps.mapLibreVersion).*/\1/p' \
     android/maps/src/test/kotlin/com/remaply/maps/RemaplyMapsTest.kt)
 check "Android MapLibre (unit test)" "$android_maplibre" "$android_test"
-grep -q "org.maplibre.gl:android-sdk:$android_maplibre" LICENSE \
-    || { echo "MISMATCH LICENSE does not name android-sdk:$android_maplibre"; fail=1; }
+android_artifact=$(sed -n 's/^maplibre-android = { module = "\([^"]*\)".*/\1/p' android/gradle/libs.versions.toml)
+grep -q "$android_artifact:$android_maplibre" LICENSE \
+    || { echo "MISMATCH LICENSE does not name $android_artifact:$android_maplibre"; fail=1; }
 
 ios_pin=$(tr -d '\n ' < Package.swift | sed -n 's/.*maplibre-gl-native-distribution",exact:"\([^"]*\)".*/\1/p')
 ios_const=$(sed -n 's/.*static let mapLibreVersion: String = "\(.*\)".*/\1/p' ios/Sources/RemaplyMaps/RemaplyMaps.swift)

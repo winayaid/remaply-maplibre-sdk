@@ -6,6 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.ViewModel
@@ -13,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.remaply.maps.CameraChangeReason
 import com.remaply.maps.CameraPosition
+import com.remaply.maps.CameraUpdate
 import com.remaply.maps.GeoCoordinate
 import com.remaply.maps.MapController
 import com.remaply.maps.MapError
@@ -115,7 +118,8 @@ public fun RemaplyMap(
 
 /**
  * Remembers a [MapController] that survives recomposition and configuration changes such as
- * rotation. It is kept in a `ViewModel` of the current `ViewModelStoreOwner`.
+ * rotation. It is kept in a `ViewModel` of the current `ViewModelStoreOwner`. Its style and camera
+ * are also saved with the screen state, so they come back after process death (markers do not).
  *
  * Spec: API-032.
  *
@@ -124,11 +128,63 @@ public fun RemaplyMap(
  */
 @Composable
 public fun rememberMapController(key: String? = null): MapController {
-    val owner = LocalViewModelStoreOwner.current ?: return remember(key) { MapController() }
+    val owner = LocalViewModelStoreOwner.current
     val resolvedKey = key ?: currentCompositeKeyHashCode.toString(KEY_RADIX)
-    val holder: MapControllerHolder =
-        viewModel(viewModelStoreOwner = owner, key = "remaply-map-controller:$resolvedKey")
-    return holder.controller
+    val controller =
+        if (owner == null) {
+            remember(key) { MapController() }
+        } else {
+            val holder: MapControllerHolder =
+                viewModel(viewModelStoreOwner = owner, key = "remaply-map-controller:$resolvedKey")
+            holder.controller
+        }
+    // Process death (API_SPEC.md §9.3): style and camera are saved with the screen's state and restored
+    // into a fresh controller. After a configuration change the retained controller already has them,
+    // so nothing is overwritten. Markers are not saved; re-add them in onMapReady.
+    rememberSaveable(key, saver = savedStateSaver(controller)) {}
+    return controller
+}
+
+private fun savedStateSaver(controller: MapController): Saver<Unit, List<Any>> =
+    Saver(
+        save = { snapshot(controller) },
+        restore = { saved ->
+            restoreInto(controller, saved)
+            Unit
+        },
+    )
+
+private fun snapshot(controller: MapController): List<Any> {
+    val camera = controller.camera
+    val style = controller.style
+    val cameraFields =
+        camera?.let { doubleArrayOf(it.center.latitude, it.center.longitude, it.zoom, it.bearing, it.tilt) }
+            ?: DoubleArray(0)
+    val (kind, value) =
+        when (style) {
+            is MapStyle.Url -> "url" to style.url
+            is MapStyle.Bundled -> "bundled" to style.path
+            null -> "" to ""
+        }
+    return listOf(cameraFields, kind, value)
+}
+
+private fun restoreInto(
+    controller: MapController,
+    saved: List<Any>,
+) {
+    val camera = saved.getOrNull(0) as? DoubleArray
+    val kind = saved.getOrNull(1) as? String
+    val value = saved.getOrNull(2) as? String
+    if (controller.style == null && value != null) {
+        when (kind) {
+            "url" -> controller.setStyle(MapStyle.url(value))
+            "bundled" -> controller.setStyle(MapStyle.bundled(value))
+        }
+    }
+    if (controller.camera == null && camera != null && camera.size == CAMERA_FIELDS) {
+        controller.setCamera(CameraUpdate(GeoCoordinate(camera[0], camera[1]), camera[2], camera[3], camera[4]))
+    }
 }
 
 /** Keeps a controller alive across configuration changes. */
@@ -137,3 +193,4 @@ internal class MapControllerHolder : ViewModel() {
 }
 
 private const val KEY_RADIX = 36
+private const val CAMERA_FIELDS = 5
