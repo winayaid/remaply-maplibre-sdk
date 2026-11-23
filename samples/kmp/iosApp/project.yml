@@ -1,0 +1,59 @@
+# XcodeGen spec for the KMP sample's iOS app. Regenerate after editing:  cd samples/kmp/iosApp && xcodegen
+name: iosApp
+
+options:
+  bundleIdPrefix: io.github.winayaid.mapstrial.kmp
+  deploymentTarget:
+    iOS: "15.5"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.0.1"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+
+packages:
+  # The Remaply iOS SDK, from its Git tag exactly as an app consumes it.
+  RemaplyMaps:
+    url: https://github.com/winayaid/remaply-maplibre-sdk
+    exactVersion: "0.0.1"
+
+targets:
+  iosApp:
+    type: application
+    platform: iOS
+    sources: [iosApp]
+    dependencies:
+      - package: RemaplyMaps
+    info:
+      path: iosApp/Info.plist
+      properties:
+        CFBundleDisplayName: Remaply KMP
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UIApplicationSupportsIndirectInputEvents: true
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        # Required by Compose Multiplatform, which checks it at launch.
+        CADisableMinimumFrameDurationOnPhone: true
+    preBuildScripts:
+      # Builds the Kotlin `Shared` framework for the current configuration and SDK (Kotlin Gradle plugin task).
+      - name: Compile Kotlin framework
+        basedOnDependencyAnalysis: false
+        script: |
+          if [ "YES" = "$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED" ]; then
+            echo "Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED being set to YES"
+            exit 0
+          fi
+          cd "$SRCROOT/.."
+          ./gradlew :shared:embedAndSignAppleFrameworkForXcode
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.winayaid.mapstrial.kmp
+        # The Gradle step writes outside the sandbox.
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        FRAMEWORK_SEARCH_PATHS: "$(inherited) $(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)"
+        OTHER_LDFLAGS: "$(inherited) -framework Shared"

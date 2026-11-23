@@ -1,0 +1,24 @@
+{
+  "originHash" : "b4f79c1edcfa96d5dabe19c8948b7faa5833ca40a8f7aab02d6386af0a0bedbb",
+  "pins" : [
+    {
+      "identity" : "maplibre-gl-native-distribution",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maplibre/maplibre-gl-native-distribution",
+      "state" : {
+        "revision" : "c2e6e6bd24efa037a8ab13463d8ad047b929eb9f",
+        "version" : "7.0.0"
+      }
+    },
+    {
+      "identity" : "remaply-maplibre-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/winayaid/remaply-maplibre-sdk",
+      "state" : {
+        "revision" : "7cddc90aea4e5ef1656baf49d0194d4a5c9d5ad3",
+        "version" : "0.0.1"
+      }
+    }
+  ],
+  "version" : 3
+}

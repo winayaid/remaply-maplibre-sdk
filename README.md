@@ -38,6 +38,7 @@ your app.
 | [`ios/`](ios/) | iOS SDK sources and tests. The Swift package manifest is [`Package.swift`](Package.swift) at the repo root. |
 | [`samples/android/`](samples/android/) | Android sample app (consumes the SDK through a Gradle composite build) |
 | [`samples/ios/`](samples/ios/) | iOS sample app (XcodeGen `project.yml` + generated Xcode project) |
+| [`samples/kmp/`](samples/kmp/) | Kotlin Multiplatform sample: one Compose Multiplatform screen on Android and iOS, using the published SDK |
 | [`docs/`](docs/) | Guides and API reference |
 | [`scripts/`](scripts/) | CI and maintenance scripts |
 

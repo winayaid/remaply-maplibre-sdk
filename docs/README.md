@@ -26,6 +26,9 @@ Both sample apps open a launcher with the same five samples:
 
 Run them with `cd samples/android && ./gradlew installDebug` and `open samples/ios/RemaplySample.xcodeproj`.
 
+**Kotlin Multiplatform:** [`samples/kmp`](../samples/kmp) shares one Compose Multiplatform screen between Android and
+iOS. On iOS it reaches the Swift SDK through a small Swift bridge; its README explains why and how.
+
 ## Quality and process
 
 - [Test report](test-report.md): Phase 5 results, manual test notes, and open issues
