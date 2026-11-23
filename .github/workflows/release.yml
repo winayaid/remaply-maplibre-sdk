@@ -1,0 +1,118 @@
+name: Release
+
+# Runs when a version tag is pushed. See docs/releasing.md.
+# SPM resolves bare SemVer tags (0.1.0), so tags have no "v" prefix.
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+-*"
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Tag, versions, and changelog agree
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - run: scripts/check-versions.sh
+      - name: Tag matches VERSION_NAME
+        run: |
+          version=$(sed -n 's/^VERSION_NAME=//p' android/gradle.properties)
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match VERSION_NAME=$version in android/gradle.properties"
+            exit 1
+          fi
+      - name: CHANGELOG has a section for this version
+        run: |
+          if ! grep -qE "^## \[${GITHUB_REF_NAME//./\\.}\] - [0-9]{4}-[0-9]{2}-[0-9]{2}$" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md needs a '## [$GITHUB_REF_NAME] - YYYY-MM-DD' section"
+            exit 1
+          fi
+
+  android:
+    name: Publish Android artifacts
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Add required reviewers to this environment so a person approves every upload.
+    environment: release
+    defaults:
+      run:
+        working-directory: android
+    env:
+      ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+      ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+      ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+      ORG_GRADLE_PROJECT_remaplyPrivateRepoUrl: ${{ vars.REMAPLY_PRIVATE_REPO_URL }}
+      ORG_GRADLE_PROJECT_remaplyPrivateUsername: ${{ secrets.REMAPLY_PRIVATE_USERNAME }}
+      ORG_GRADLE_PROJECT_remaplyPrivatePassword: ${{ secrets.REMAPLY_PRIVATE_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: true
+
+      - name: Check
+        run: ./gradlew check --console=plain
+
+      - name: Build and verify signed artifacts
+        run: |
+          ./gradlew publishToMavenLocal --console=plain
+          python3 ../scripts/check-publication.py --signed
+
+      # Uploads a deployment to the Central Portal. It is not public until someone presses
+      # "Publish" in the portal (automaticRelease = false in android/build.gradle.kts).
+      - name: Upload to Maven Central
+        if: vars.PUBLISH_TO_MAVEN_CENTRAL == 'true'
+        run: ./gradlew publishToMavenCentral --no-configuration-cache --console=plain
+
+      - name: Publish to private repository
+        if: vars.REMAPLY_PRIVATE_REPO_URL != ''
+        run: ./gradlew publishAllPublicationsToRemaplyPrivateRepository --console=plain
+
+  ios:
+    name: iOS package resolves from the tag
+    needs: verify
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - run: scripts/check-spm-consumer.sh "https://github.com/${{ github.repository }}" "$GITHUB_REF_NAME"
+
+  github-release:
+    name: Draft GitHub release
+    needs: [android, ios]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Create draft release from the changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          awk -v v="$GITHUB_REF_NAME" '
+            $0 ~ "^## \\[" v "\\]" { found = 1; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          prerelease=""
+          case "$GITHUB_REF_NAME" in 0.*|*-*) prerelease="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" --draft $prerelease \
+            --title "$GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/notes.md"

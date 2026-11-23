@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Stable id so the view's controller is retained across activity recreation. -->
+    <item name="test_map" type="id" />
+</resources>

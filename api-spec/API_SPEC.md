@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Spec version | 0.1.0 (draft, Phase 0) |
-| Status | **Approved** (Phase 0). Clarified in Phase 2; see `CHANGELOG.md`. |
+| Status | **Approved** (Phase 0). Clarified in Phases 2–4; see `CHANGELOG.md`. Parity verified: `docs/parity-checklist.md`. |
 | Applies to | Android SDK (Kotlin) and iOS SDK (Swift) |
 | Change control | Any change to this file after approval requires a matching `CHANGELOG.md` entry (see §17). |
 
@@ -24,7 +24,7 @@ This document defines every public type, method, parameter, callback, default va
 9. [Lifecycle and state retention](#9-lifecycle-and-state-retention)
 10. [Errors](#10-errors)
 11. [Logging and error reporting](#11-logging-and-error-reporting)
-12. [Global SDK object: `RemaplyMaps`](#12-global-sdk-object-remaplymaps)
+12. [Global SDK object: `RemaplyMaps`](#12-global-sdk-object-remaplymaps--api-080)
 13. [Extension points](#13-extension-points)
 14. [Behavior constants](#14-behavior-constants)
 15. [Out of scope for v1](#15-out-of-scope-for-v1)
@@ -41,7 +41,7 @@ This document defines every public type, method, parameter, callback, default va
 |---|---|---|
 | Wrapped SDK | MapLibre Native Android | MapLibre Native iOS |
 | Pinned version | **13.7.1** (released 2026-10-15) | **7.0.0** (released 2026-10-28) |
-| Dependency | `org.maplibre.gl:android-sdk:13.7.1` (OpenGL ES renderer) | SPM `https://github.com/maplibre/maplibre-gl-native-distribution`, exact version `7.0.0`, product `MapLibre` |
+| Dependency | `org.maplibre.gl:android-sdk-opengl:13.7.1` (OpenGL ES renderer; the default `android-sdk` artifact uses Vulkan, which crashes on devices without Vulkan) | SPM `https://github.com/maplibre/maplibre-gl-native-distribution`, exact version `7.0.0`, product `MapLibre` |
 | Minimum OS | **API 24** (Android 7.0). MapLibre requires API 23, so the requested minimum stands. | **iOS 15.5**. ⚠️ Raised from the requested iOS 15.0 because MapLibre iOS 7.0.0 requires 15.5. |
 | Language | Kotlin 2.2+ (the SDK emits Kotlin 2.2 metadata; MapLibre 13.7.1 is built with Kotlin 2.3) | Swift 5.9+ (Xcode 16 or newer) |
 | Compile SDK | **37**. Current AndroidX releases (core, Compose, Lifecycle) require apps to compile against API 37. This does not change the minimum OS. | n/a |
@@ -57,14 +57,16 @@ This document defines every public type, method, parameter, callback, default va
 
 ## 2. Packages and installation coordinates
 
-> Names in this section are proposals. See open question Q1.
+> Names in this section were proposals (open question Q1). The 0.0.x trial publishes under the Maven Central
+> namespace `io.github.winayaid` with `remaply-maps-trial-*` artifact IDs and the Kotlin package
+> `io.github.winayaid.mapstrial`, so it never overlaps the final SDK. Final coordinates and package are still open.
 
 | | Android | iOS |
 |---|---|---|
-| Core artifact / product | `com.remaply:maps-android:0.1.0` | Swift package at the repo root, product `RemaplyMaps` |
-| Compose artifact | `com.remaply:maps-android-compose:0.1.0` (depends on the core artifact) | Not needed. SwiftUI support ships in `RemaplyMaps`. |
-| Kotlin package / Swift module | `com.remaply.maps` (Compose: `com.remaply.maps.compose`) | `RemaplyMaps` |
-| Repository | Maven Central, with a configurable private repo (Phase 7) | Git tag per version, for example `0.1.0` |
+| Core artifact / product | `io.github.winayaid:remaply-maps-trial-android:0.0.1` | Swift package at the repo root, product `RemaplyMaps` |
+| Compose artifact | `io.github.winayaid:remaply-maps-trial-compose:0.0.1` (depends on the core artifact) | Not needed. SwiftUI support ships in `RemaplyMaps`. |
+| Kotlin package / Swift module | `io.github.winayaid.mapstrial` (Compose: `io.github.winayaid.mapstrial.compose`); proposed final: `com.remaply.maps` | `RemaplyMaps` |
+| Repository | Maven Central, with a configurable private repo ([docs/releasing.md](../docs/releasing.md)) | Git tag per version, for example `0.1.0` |
 
 Compose is a separate Android artifact so that apps using only classic Views don't pull in Compose.
 
@@ -74,7 +76,7 @@ Compose is a separate Android artifact so that apps using only classic Views don
 
 | Platform | Dependency | Why |
 |---|---|---|
-| Android | `org.maplibre.gl:android-sdk` (`api` scope) | The wrapped SDK. `api` scope lets the experimental escape hatch (§13.2) compile against MapLibre types. |
+| Android | `org.maplibre.gl:android-sdk-opengl` (`api` scope) | The wrapped SDK. `api` scope lets the experimental escape hatch (§13.2) compile against MapLibre types. |
 | Android | `androidx.lifecycle:lifecycle-runtime`, `lifecycle-viewmodel` | Automatic lifecycle binding and retaining state across rotation (§9). Already a transitive dependency of MapLibre and AppCompat. |
 | Android (Compose artifact) | `androidx.compose.ui`, `androidx.compose.runtime`, `androidx.lifecycle:lifecycle-viewmodel-compose` | The Compose entry point |
 | iOS | `MapLibre` | The wrapped SDK |
@@ -686,6 +688,10 @@ How the listener is referenced differs by platform:
 | API-046 | `onCameraChange` | The camera changed, at most once per rendered frame. Doesn't fire for the initial camera on first load. | Current camera and reason |
 | API-047 | `onCameraIdle` | The camera stopped moving after one or more `onCameraChange` events | Final camera |
 
+**What the map shows after a style error.** `INVALID_ARGUMENT` and `STYLE_NOT_FOUND` are detected before MapLibre is asked to load anything, so the previous style (if any) stays on screen with its markers, and marker changes keep rendering. `STYLE_LOAD_FAILED` means MapLibre already dropped the previous style, so the map shows no style until a later `setStyle` succeeds. Markers reappear with that style.
+
+**Gesture physics** (for example, how far a fling coasts) follow each platform's MapLibre and are not part of the contract. The events are: `onCameraChange(…, USER_GESTURE)` while the map moves, then exactly one `onCameraIdle` when it stops.
+
 ### 8.3 Ordering guarantees
 
 1. First load: `onStyleLoaded` → `onMapReady`. No camera events fire for the initial camera.
@@ -713,7 +719,7 @@ How the listener is referenced differs by platform:
 |---|---|
 | Android View | Binds to `findViewTreeLifecycleOwner()` when attached to a window. In Fragments this is the view lifecycle owner. If there is no owner, the app must call the lifecycle methods. `onLowMemory` comes from `ComponentCallbacks2`. |
 | Compose | `LocalLifecycleOwner`. Leaving the composition calls `onDestroy`. |
-| iOS UIKit | Moving into or out of a window → start/stop. `didEnterBackground` / `willEnterForeground` → pause+stop / start+resume. `didReceiveMemoryWarning` → `onLowMemory`. `deinit` → `onDestroy`. |
+| iOS UIKit | Moving into or out of a window → start/stop. `didEnterBackground` / `willEnterForeground` → pause+stop / start+resume. `didReceiveMemoryWarning` → `onLowMemory`. A view deallocated without `onDestroy` still releases its native map, and its controller keeps the last idle camera, style, and markers (the controller holds its view weakly). |
 | SwiftUI | Same as UIKit. `dismantleUIView` calls `onDestroy`. |
 
 ### 9.2 Surviving rotation and backgrounding
@@ -740,13 +746,14 @@ On iOS, rotation keeps the same view, so nothing is rebuilt.
 - When the view has an id, `onSaveInstanceState(outState)` saves style and camera, and they are restored on recreation.
 - Markers are **not** saved because they may hold Bitmaps. The app re-adds them in `onMapReady`.
 - With automatic lifecycle this happens through the View's normal saved-state mechanism, and the manual method is only needed for custom hosts.
+- **Compose:** `rememberMapController` saves style and camera with the screen's saved state and restores them into a fresh controller after process death. After a configuration change, the retained controller already has them and nothing is overwritten.
 - iOS has no equivalent hook; app termination is handled by the app.
 
 ### 9.4 Memory guarantees
 
 - After `onDestroy`, no SDK object holds a reference to the Activity, Context, View, UIView, view controller, or app listener.
 - A controller with no bound view holds only value types and Bitmap/UIImage icons.
-- 50 repeated create/destroy cycles must show no growth in retained objects, checked with LeakCanary on Android and the Xcode memory graph / `XCTMemoryMetric` on iOS (Phase 5).
+- 50 repeated create/destroy cycles must show no growth in retained objects. The instrumented and integration tests (Phase 5) check that every view, native map view, and Android Activity is released. They compare memory growth with plain MapLibre doing the same cycles in the same process; the SDK may add at most 16 MB. (MapLibre itself retains some native memory per map instance on the Android emulator; see `docs/test-report.md`.)
 
 ---
 
@@ -814,6 +821,7 @@ public protocol MapLogger: AnyObject, Sendable {
 - The default logger (when `RemaplyMaps.logger` is null) writes to Logcat on Android and to `os.Logger` (subsystem `com.remaply.maps`) on iOS.
 - **The logger may be called from any thread**, because MapLibre logs from worker threads. Implementations must be thread-safe.
 - The logger is held strongly and globally. Don't capture an Activity or view controller in it.
+- MapLibre iOS release binaries have no debug/verbose levels, so MapLibre's own messages at those levels exist only on Android. The SDK's own messages are identical on both platforms.
 - This logger is the **error-reporting hook** required by Phase 4. Apps forward `WARN`/`ERROR` entries to their crash or analytics tool from here.
 
 ---
@@ -852,6 +860,8 @@ v1 doesn't show user location. Two things are reserved for a later minor release
 - **Responsibility:** permissions will stay the app's job; the SDK will never request them.
 
 Until then, apps can enable MapLibre's location component through the escape hatch below.
+
+**Permissions (Android).** The SDK removes the location permissions that MapLibre's manifest declares, so apps that don't use location don't request them. An app that enables location through the escape hatch declares `ACCESS_FINE_LOCATION` / `ACCESS_COARSE_LOCATION` in its own manifest.
 
 ### 13.2 Native map escape hatch (experimental) — API-091
 
@@ -970,7 +980,7 @@ Each question has a recommended answer. Approving the spec as written accepts al
 
 | # | Question | Recommendation |
 |---|---|---|
-| Q1 | Product and package names: `Remaply Maps`, Maven group `com.remaply`, Kotlin package `com.remaply.maps`, Swift module `RemaplyMaps`, view names `RemaplyMapView` / `RemaplyMap`. | Accept, or supply the final names now. Renaming after Phase 2 is expensive. |
+| Q1 | Product and package names: `Remaply Maps`, Maven group `com.remaply` (trial: `io.github.winayaid`, see §2), Kotlin package `com.remaply.maps` (trial: `io.github.winayaid.mapstrial`), Swift module `RemaplyMaps`, view names `RemaplyMapView` / `RemaplyMap`. | Accept, or supply the final names now. Renaming after Phase 2 is expensive. |
 | Q2 | iOS minimum is **15.5** (MapLibre 7.0.0) instead of 15.0. The alternative is MapLibre iOS 6.31.0, which keeps 15.0 but is the previous major. | Use 7.0.0 / iOS 15.5. The Swift API is unchanged from 6.x, and 15.5 covers almost the same devices. |
 | Q3 | Markers are drawn as an SDK-managed GeoJSON source + symbol layer on both platforms, rather than with MapLibre Android's deprecated `Marker` annotations or iOS `MLNPointAnnotation` views. | Accept. It gives identical rendering, z-ordering, and hit-testing on both platforms. |
 | Q4 | The Android-only public members are `RemaplyMapView.onSaveInstanceState(Bundle)`, the `Bundle?` parameter of `onCreate` (iOS `onCreate()` takes none), and the XML attributes. | Accept. They are idiomatic and only needed for manual-lifecycle hosts. |

@@ -4,7 +4,6 @@
     <string name="view_sample_title">Classic View sample</string>
     <string name="action_animate">Animate</string>
     <string name="action_reset">Reset</string>
-    <string name="action_open_view_sample">View sample</string>
     <string name="status_loading">Loading map…</string>
     <plurals name="status_ready">
         <item quantity="one">Map ready · %1$d marker</item>

@@ -5,10 +5,12 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.maven.publish)
 }
 
 android {
-    namespace = "com.remaply.maps.compose"
+    namespace = "io.github.winayaid.mapstrial.compose"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -44,8 +46,35 @@ kotlin {
     }
 }
 
+dokka {
+    moduleName.set("remaply-maps-trial-compose")
+    dokkaSourceSets.configureEach {
+        includes.from("Module.md")
+        reportUndocumented.set(true)
+        sourceLink {
+            localDirectory.set(file("src/main/kotlin"))
+            remoteUrl("https://github.com/winayaid/remaply-maplibre-sdk/tree/main/android/maps-compose/src/main/kotlin")
+            remoteLineSuffix.set("#L")
+        }
+        perPackageOption {
+            matchingRegex.set(".*\\.internal.*")
+            suppress.set(true)
+        }
+    }
+    dokkaPublications.html {
+        failOnWarning.set(true)
+    }
+}
+
+mavenPublishing {
+    pom {
+        name.set("Remaply Maps SDK for Android — Compose (trial)")
+        description.set("Jetpack Compose entry point for the Remaply Maps SDK for Android.")
+    }
+}
+
 dependencies {
-    api(project(":maps-android"))
+    api(project(":remaply-maps-trial-android"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.runtime)

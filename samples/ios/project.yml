@@ -6,7 +6,7 @@
 name: RemaplySample
 
 options:
-  bundleIdPrefix: com.remaply.maps
+  bundleIdPrefix: io.github.winayaid.mapstrial
   deploymentTarget:
     iOS: "15.5"
   createIntermediateGroups: true
@@ -14,7 +14,7 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    MARKETING_VERSION: "0.1.0"
+    MARKETING_VERSION: "0.0.1"
     CURRENT_PROJECT_VERSION: "1"
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Automatic
@@ -30,6 +30,9 @@ targets:
     platform: iOS
     sources:
       - RemaplySample
+      # Folder reference: keeps "styles/" in the app bundle, matching Android's assets/styles/.
+      - path: Resources/styles
+        type: folder
     dependencies:
       - package: RemaplyMaps
         product: RemaplyMaps
@@ -50,6 +53,29 @@ targets:
           - UIInterfaceOrientationLandscapeRight
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.remaply.maps.sample
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.winayaid.mapstrial.sample
         TARGETED_DEVICE_FAMILY: "1,2"
         GENERATE_INFOPLIST_FILE: NO
+
+  RemaplySampleUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - RemaplySampleUITests
+    dependencies:
+      - target: RemaplySample
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.winayaid.mapstrial.sample.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: RemaplySample
+
+schemes:
+  RemaplySample:
+    build:
+      targets:
+        RemaplySample: all
+        RemaplySampleUITests: [test]
+    test:
+      targets:
+        - RemaplySampleUITests
