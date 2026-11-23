@@ -9,6 +9,11 @@ and add an entry here (API_SPEC.md §17).
 
 ## [Unreleased]
 
+### Added
+
+- Kotlin Multiplatform sample (`samples/kmp`): one Compose Multiplatform screen on Android and iOS, using the
+  published 0.0.1 SDK (Maven Central and the SPM tag). iOS reaches the Swift SDK through a small Swift bridge.
+
 ## [0.0.1] - 2026-11-23
 
 Trial release to test publishing to Maven Central and SPM. Android artifacts are

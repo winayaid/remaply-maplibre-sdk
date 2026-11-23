@@ -1,0 +1,29 @@
+# Standalone on purpose: this sample consumes the SDK the way a KMP app does, from Maven Central (Android)
+# and Swift Package Manager (iOS, see iosApp/project.yml).
+
+[versions]
+remaplyMaps = "0.0.1"
+kotlin = "2.4.21"
+agp = "9.5.1"
+composeMultiplatform = "1.12.2"
+androidxActivity = "1.13.0"
+
+compileSdk = "37"
+minSdk = "24"
+targetSdk = "37"
+
+[libraries]
+remaply-maps-android = { module = "io.github.winayaid:remaply-maps-trial-android", version.ref = "remaplyMaps" }
+remaply-maps-compose = { module = "io.github.winayaid:remaply-maps-trial-compose", version.ref = "remaplyMaps" }
+
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMultiplatform" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-kmp-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
