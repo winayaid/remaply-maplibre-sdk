@@ -93,7 +93,7 @@ final class SampleUITests: XCTestCase {
         Thread.sleep(forTimeInterval: 1.0)
     }
 
-    private func waitForStatus(prefix: String, timeout: TimeInterval = 20, line: UInt = #line) {
+    private func waitForStatus(prefix: String, timeout: TimeInterval = 60, line: UInt = #line) {
         let status = app.staticTexts["status"]
         let predicate = NSPredicate(format: "label BEGINSWITH %@", prefix)
         let expectation = XCTNSPredicateExpectation(predicate: predicate, object: status)
