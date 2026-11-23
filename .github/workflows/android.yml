@@ -40,6 +40,11 @@ jobs:
 
       # What a release would upload (docs/releasing.md), minus signing: POMs, AARs, sources, javadoc.
       - name: Publish dry run (Maven Local)
+        # Unset secrets and variables arrive as empty strings, as in release.yml; the build must ignore them.
+        env:
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ""
+          ORG_GRADLE_PROJECT_remaplyPrivateRepoUrl: ""
+          ORG_GRADLE_PROJECT_remaplyPrivateUsername: ""
         run: |
           ./gradlew publishToMavenLocal --console=plain
           python3 ../scripts/check-publication.py
