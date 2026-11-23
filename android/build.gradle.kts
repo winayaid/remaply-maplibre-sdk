@@ -12,9 +12,12 @@ val sdkVersion = providers.gradleProperty("VERSION_NAME").get()
 
 // Publishing (docs/releasing.md). Credentials and keys come only from Gradle properties or
 // ORG_GRADLE_PROJECT_* environment variables, never from files in the repository.
-val signingKey = providers.gradleProperty("signingInMemoryKey")
-val privateRepoUrl = providers.gradleProperty("remaplyPrivateRepoUrl")
-val privateRepoUser = providers.gradleProperty("remaplyPrivateUsername")
+// Blank counts as unset: GitHub Actions passes an unset secret or variable as an empty string.
+fun optionalProperty(name: String) = providers.gradleProperty(name).filter { it.isNotBlank() }
+
+val signingKey = optionalProperty("signingInMemoryKey")
+val privateRepoUrl = optionalProperty("remaplyPrivateRepoUrl")
+val privateRepoUser = optionalProperty("remaplyPrivateUsername")
 
 subprojects {
     group = "io.github.winayaid"
