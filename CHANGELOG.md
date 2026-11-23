@@ -9,7 +9,7 @@ and add an entry here (API_SPEC.md §17).
 
 ## [Unreleased]
 
-## [0.0.1] - 2026-11-20
+## [0.0.1] - 2026-11-23
 
 Trial release to test publishing to Maven Central and SPM. Android artifacts are
 `io.github.winayaid:remaply-maps-trial-android` and `remaply-maps-trial-compose`; the final SDK will use other

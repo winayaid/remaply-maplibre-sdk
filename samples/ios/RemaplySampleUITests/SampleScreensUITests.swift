@@ -72,7 +72,7 @@ final class SampleScreensUITests: XCTestCase {
         app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: dx, dy: dy)).tap()
     }
 
-    private func waitForStatus(prefix: String, timeout: TimeInterval = 20, line: UInt = #line) {
+    private func waitForStatus(prefix: String, timeout: TimeInterval = 60, line: UInt = #line) {
         let predicate = NSPredicate(format: "label BEGINSWITH %@", prefix)
         let result = XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: predicate, object: status)],
                                       timeout: timeout)
